@@ -82,8 +82,18 @@ function buildRoomScenery(roomKey, seed = 0) {
 }
 
 // Assemble varied exterior surroundings using the seed.
-function buildExteriorScenery(seed = 0) {
+// For a full FRONT view we use a single coherent whole-frontage 'setting' so the
+// elevation reads as one consistent scene (and spans very different looks,
+// including no-greenery urban ones). For partial/rear views we mix the
+// individual approach/planting/surroundings elements.
+function buildExteriorScenery(seed = 0, aspect = "") {
   const s = EXTERIOR_SCENERY;
+  const isFullFront = aspect === "front_full";
+  if (isFullFront) {
+    const setting = seededPick(s.frontSetting, seed, 9);
+    const sky = seededPick(s.sky, seed, 4);
+    return [setting, sky].filter(Boolean).join(", ");
+  }
   const bits = [
     seededPick(s.approach, seed, 1),
     seededPick(s.planting, seed, 2),
@@ -299,7 +309,7 @@ function buildLocationContext(brief) {
     }
     // Varied surroundings so exteriors don't all look the same (and not always trees)
     const seed = brief.rotationSeed || 0;
-    parts.push(buildExteriorScenery(seed));
+    parts.push(buildExteriorScenery(seed, brief.exteriorAspect));
     // Explicit house number only on front views (so it isn't invented from a stray number)
     const isFront = brief.exteriorAspect === "front_full" || brief.exteriorAspect === "front_partial";
     if (isFront) {

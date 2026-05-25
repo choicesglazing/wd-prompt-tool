@@ -823,50 +823,52 @@ export const COLOUR_SETS = {
 
 // =============================================================================
 // HOUSING STOCK CATALOGUE — by service-area CITY
-// IMPORTANT: descriptions deliberately describe WALLS, ROOF, PROPORTIONS and
-// SETTING only — NOT window style. Window/door style always comes from the
-// chosen product, so the house description must never mention sashes, bays,
-// casements etc. or it will fight the product on full-house views.
-// Each city keeps its authentic local building material for realism.
+// IMPORTANT: descriptions describe ONLY THE BUILDING — material, roof, storeys,
+// proportions. They deliberately do NOT mention surroundings (gardens, walls,
+// trees, drives, streets) because those are now supplied separately by the
+// randomised EXTERIOR_SCENERY, so full-front views vary every generation
+// instead of always showing the same trees/wall/garden baked into the house.
+// They also never mention window style (sash/casement/bay) — that comes from
+// the chosen product. Local building material is kept accurate per city.
 // =============================================================================
 export const HOUSING_STOCK = {
   cambridge: [
-    { id: "cam_victorian_terrace", label: "Victorian terrace", description: "a two-storey Victorian terraced house in gault (pale yellow-cream) Cambridge brick, slate roof, two storeys, modest proportions, a small front garden behind a low brick wall or iron railing, mature street trees on a quiet residential road" },
-    { id: "cam_edwardian_semi", label: "Edwardian semi-detached", description: "a two-storey Edwardian semi-detached house in yellow-cream Cambridge brick with some red-brick detailing, slate roof, generous proportions, a low front wall and short tiled path, leafy established street" },
-    { id: "cam_college_townhouse", label: "College-quarter townhouse", description: "an elegant three-storey city townhouse in painted render or pale yellow brick, period proportions, set on a quiet conservation street with mature street trees and a hint of a walled garden" },
-    { id: "cam_1930s_semi", label: "1930s suburban semi", description: "a 1930s suburban semi-detached house, red brick to the ground floor with painted render or pebbledash above, hipped tiled roof, a modest front garden with a low wall and a driveway, mature suburban planting" },
-    { id: "cam_newbuild", label: "Modern new-build (Eddington / Trumpington)", description: "a modern new-build house in pale buff brick with some timber or render cladding panels, tiled roof, clean contemporary proportions, an integrated garage and block-paved driveway, newly landscaped front garden" }
+    { id: "cam_victorian_terrace", label: "Victorian terrace", description: "a two-storey Victorian terraced house in gault (pale yellow-cream) Cambridge brick with a slate roof, modest period proportions" },
+    { id: "cam_edwardian_semi", label: "Edwardian semi-detached", description: "a two-storey Edwardian semi-detached house in yellow-cream Cambridge brick with some red-brick detailing and a slate roof, generous proportions" },
+    { id: "cam_college_townhouse", label: "College-quarter townhouse", description: "an elegant three-storey city townhouse in painted render or pale yellow brick with period proportions" },
+    { id: "cam_1930s_semi", label: "1930s suburban semi", description: "a 1930s suburban semi-detached house, red brick to the ground floor with painted render or pebbledash above and a hipped tiled roof" },
+    { id: "cam_newbuild", label: "Modern new-build (Eddington / Trumpington)", description: "a modern new-build house in pale buff brick with some timber or render cladding panels and a tiled roof, clean contemporary proportions" }
   ],
   peterborough: [
-    { id: "pboro_victorian_terrace", label: "Victorian terrace", description: "a two-storey Victorian terraced house in warm red brick, slate roof, two storeys, a small front yard behind a low wall, on-street parking, mature street trees typical of inner Peterborough" },
-    { id: "pboro_1930s_semi", label: "1930s suburban semi", description: "a 1930s suburban semi-detached house, red brick to the ground floor with render or pebbledash above, hipped tiled roof, a modest front garden, low wall and driveway, established suburban street" },
-    { id: "pboro_stone_village", label: "Limestone village house (Barnack / Castor)", description: "a village house in honey-coloured local limestone (pale Lincolnshire-edge limestone, NOT orange ironstone), stone-tile or slate roof, deep window reveals showing the thickness of the stone walls, cottage proportions, a country garden behind a low stone wall" },
-    { id: "pboro_newbuild", label: "Modern new-build (Hampton / Paston)", description: "a modern new-build estate house in red or buff brick with some cladding panels, tiled roof, contemporary proportions, integrated garage and block-paved driveway, small newly planted front garden" },
-    { id: "pboro_fenland_farmhouse", label: "Fenland farmhouse", description: "a Fenland farmhouse in red or buff brick, pantile or slate roof, generous symmetrical proportions, set in flat open agricultural landscape with big open sky, mature trees and a gravel approach" }
+    { id: "pboro_victorian_terrace", label: "Victorian terrace", description: "a two-storey Victorian terraced house in warm red brick with a slate roof, period proportions" },
+    { id: "pboro_1930s_semi", label: "1930s suburban semi", description: "a 1930s suburban semi-detached house, red brick to the ground floor with render or pebbledash above and a hipped tiled roof" },
+    { id: "pboro_stone_village", label: "Limestone village house (Barnack / Castor)", description: "a village house in honey-coloured local limestone (pale Lincolnshire-edge limestone, NOT orange ironstone) with a stone-tile or slate roof, deep window reveals showing the thickness of the stone walls, cottage proportions" },
+    { id: "pboro_newbuild", label: "Modern new-build (Hampton / Paston)", description: "a modern new-build estate house in red or buff brick with some cladding panels and a tiled roof, contemporary proportions" },
+    { id: "pboro_fenland_farmhouse", label: "Fenland farmhouse", description: "a Fenland farmhouse in red or buff brick with a pantile or slate roof, generous symmetrical proportions" }
   ],
   northampton: [
-    { id: "ntn_ironstone_village", label: "Ironstone village house", description: "a village house in characteristic warm orange-brown Northamptonshire ironstone (NOT yellow Cotswold, NOT grey limestone), stone or slate roof, deep stone-surrounded openings, cottage proportions, a mature country garden with stone walls" },
-    { id: "ntn_red_brick_terrace", label: "Red brick Victorian terrace", description: "a two-storey red brick Victorian terraced house, slate roof, a small front yard, on-street parking, mature street trees, a town residential setting" },
-    { id: "ntn_1930s_semi", label: "1930s suburban semi", description: "a 1930s suburban semi-detached house, red brick to the ground floor with render or pebbledash above, hipped tiled roof, a modest front garden with a low wall and driveway, mature suburban planting" },
-    { id: "ntn_newbuild", label: "Modern new-build (Upton / Wootton)", description: "a modern new-build estate house in red or buff brick with cladding panels, tiled roof, contemporary proportions, integrated garage, block-paved driveway and a small landscaped front garden" }
+    { id: "ntn_ironstone_village", label: "Ironstone village house", description: "a village house in characteristic warm orange-brown Northamptonshire ironstone (NOT yellow Cotswold, NOT grey limestone) with a stone or slate roof, deep stone-surrounded openings, cottage proportions" },
+    { id: "ntn_red_brick_terrace", label: "Red brick Victorian terrace", description: "a two-storey red brick Victorian terraced house with a slate roof, period proportions" },
+    { id: "ntn_1930s_semi", label: "1930s suburban semi", description: "a 1930s suburban semi-detached house, red brick to the ground floor with render or pebbledash above and a hipped tiled roof" },
+    { id: "ntn_newbuild", label: "Modern new-build (Upton / Wootton)", description: "a modern new-build estate house in red or buff brick with cladding panels and a tiled roof, contemporary proportions" }
   ],
   lincoln: [
-    { id: "lin_limestone_village", label: "Limestone village / cathedral-quarter house", description: "a house in honey-coloured Lincolnshire limestone (pale honey, NOT orange ironstone, NOT Cotswold yellow), stone-tile or slate roof, deep window reveals showing the thickness of the stone walls, period proportions, set on a characterful street or in a country garden behind a low stone wall" },
-    { id: "lin_red_brick_terrace", label: "Red brick Victorian terrace", description: "a two-storey red brick Victorian terraced house, slate roof, a small front yard, on-street parking, period character, mature street trees" },
-    { id: "lin_1930s_semi", label: "1930s suburban semi", description: "a 1930s suburban semi-detached house, red brick to the ground floor with render or pebbledash above, hipped tiled roof, a modest front garden, low wall and driveway, established suburban street" },
-    { id: "lin_newbuild", label: "Modern new-build", description: "a modern new-build estate house in red or buff brick with cladding panels, tiled roof, contemporary proportions, integrated garage and block-paved driveway, newly planted front garden" }
+    { id: "lin_limestone_village", label: "Limestone village / cathedral-quarter house", description: "a house in honey-coloured Lincolnshire limestone (pale honey, NOT orange ironstone, NOT Cotswold yellow) with a stone-tile or slate roof, deep window reveals showing the thickness of the stone walls, period proportions" },
+    { id: "lin_red_brick_terrace", label: "Red brick Victorian terrace", description: "a two-storey red brick Victorian terraced house with a slate roof, period character and proportions" },
+    { id: "lin_1930s_semi", label: "1930s suburban semi", description: "a 1930s suburban semi-detached house, red brick to the ground floor with render or pebbledash above and a hipped tiled roof" },
+    { id: "lin_newbuild", label: "Modern new-build", description: "a modern new-build estate house in red or buff brick with cladding panels and a tiled roof, contemporary proportions" }
   ],
   bedford: [
-    { id: "bed_edwardian_terrace", label: "Edwardian terrace", description: "a two-storey Edwardian terraced house in red brick with cream stone detailing, slate or tiled roof, a small front yard behind a low wall, on-street parking, mature street trees" },
-    { id: "bed_1930s_semi", label: "1930s suburban semi", description: "a 1930s suburban semi-detached house, red brick to the ground floor with painted render or pebbledash above, hipped tiled roof, a modest front garden with a low brick wall and driveway, mature suburban planting" },
-    { id: "bed_market_town", label: "Market-town house (Ampthill / Woburn area)", description: "a two-storey market-town house in a mix of red brick or painted render, tiled or slate roof, Georgian-influenced symmetrical proportions, set on a characterful street or mews approach" },
-    { id: "bed_newbuild", label: "Modern new-build (Wixams / Marston Vale)", description: "a modern new-build estate house in red or buff brick with some cladding panels, tiled roof, contemporary proportions, integrated garage and block-paved driveway, small newly planted front garden" }
+    { id: "bed_edwardian_terrace", label: "Edwardian terrace", description: "a two-storey Edwardian terraced house in red brick with cream stone detailing and a slate or tiled roof, period proportions" },
+    { id: "bed_1930s_semi", label: "1930s suburban semi", description: "a 1930s suburban semi-detached house, red brick to the ground floor with painted render or pebbledash above and a hipped tiled roof" },
+    { id: "bed_market_town", label: "Market-town house (Ampthill / Woburn area)", description: "a two-storey market-town house in a mix of red brick or painted render with a tiled or slate roof, Georgian-influenced symmetrical proportions" },
+    { id: "bed_newbuild", label: "Modern new-build (Wixams / Marston Vale)", description: "a modern new-build estate house in red or buff brick with some cladding panels and a tiled roof, contemporary proportions" }
   ],
   kettering: [
-    { id: "ket_ironstone_village", label: "Ironstone village house", description: "a village house in characteristic warm orange-brown Northamptonshire ironstone (NOT yellow Cotswold, NOT grey limestone), stone or slate roof, deep stone-surrounded openings, cottage proportions, a mature country garden with stone walls" },
-    { id: "ket_red_brick_terrace", label: "Red brick Victorian terrace", description: "a two-storey red brick Victorian terraced house, slate roof, a small front yard, on-street parking, mature street trees, a hosiery-town residential setting" },
-    { id: "ket_1930s_semi", label: "1930s suburban semi", description: "a 1930s suburban semi-detached house, red brick to the ground floor with render or pebbledash above, hipped tiled roof, a modest front garden with a low wall and driveway, mature suburban planting" },
-    { id: "ket_newbuild", label: "Modern new-build", description: "a modern new-build estate house in red or buff brick with cladding panels, tiled roof, contemporary proportions, integrated garage, block-paved driveway and a small landscaped front garden" }
+    { id: "ket_ironstone_village", label: "Ironstone village house", description: "a village house in characteristic warm orange-brown Northamptonshire ironstone (NOT yellow Cotswold, NOT grey limestone) with a stone or slate roof, deep stone-surrounded openings, cottage proportions" },
+    { id: "ket_red_brick_terrace", label: "Red brick Victorian terrace", description: "a two-storey red brick Victorian terraced house with a slate roof, period proportions" },
+    { id: "ket_1930s_semi", label: "1930s suburban semi", description: "a 1930s suburban semi-detached house, red brick to the ground floor with render or pebbledash above and a hipped tiled roof" },
+    { id: "ket_newbuild", label: "Modern new-build", description: "a modern new-build estate house in red or buff brick with cladding panels and a tiled roof, contemporary proportions" }
   ]
 };
 
@@ -1689,6 +1691,24 @@ export const EXTERIOR_SCENERY = {
   doorColour: [
     "a navy front door", "a sage-green front door", "a deep-red front door",
     "a black front door", "a soft-grey front door", "a racing-green front door"
+  ],
+  // Whole-frontage CHARACTER for full front views. Deliberately spans very
+  // different settings — hard urban, leafy suburban, open rural, paved
+  // forecourts — so full front elevations don't all look the same. Several
+  // have NO trees or greenery at all.
+  frontSetting: [
+    "set directly on the pavement of an urban street with no front garden, the front wall meeting the footpath, parked cars along the kerb, neighbouring facades continuing on either side",
+    "with a small paved forecourt and no greenery, clean hard landscaping, bin store to one side, an ordinary residential street behind",
+    "with a tidy open lawn frontage and no fence, a clear uncluttered approach, open sky above and no trees in frame",
+    "with a low brick boundary wall and a short path to the door, a couple of potted plants by the entrance, quiet street",
+    "behind a clipped evergreen hedge with a wrought-iron gate, a neat front garden, established but not overgrown",
+    "with a block-paved driveway filling the frontage, one car parked, minimal planting, a typical suburban cul-de-sac feel",
+    "on a leafy residential road with mature street trees set back behind the house, dappled light, established gardens nearby",
+    "with a gravel frontage and lavender borders, a country-edge setting, big open sky and distant fields beyond the rooftops",
+    "in a terraced row where identical houses continue left and right, on-street parking, an urban townscape with little greenery",
+    "with a generous open driveway and double garage, contemporary hard landscaping, a modern estate street behind",
+    "set back behind a white-rendered low wall and a wide gravel drive, a few architectural planters, crisp and uncluttered",
+    "on a corner plot with a wrapping low wall, open aspect on two sides, neighbouring houses at a distance"
   ]
 };
 

@@ -22,6 +22,8 @@ import {
   UNIVERSAL_NEGATIVES,
   UK_NEGATIVES,
   PEOPLE_NEGATIVES,
+  ALUMINIUM_REALISM,
+  ALUMINIUM_NEGATIVES,
   MUSIC_PRESETS,
   COMPDOOR_STYLES,
   COMPDOOR_GLASS,
@@ -117,6 +119,16 @@ function buildProductDescription(brief) {
     parts.push(`distinctive features: ${product.signatureVisualCue}`);
   }
 
+  // Material realism — for aluminium, describe how the surface actually behaves
+  // with light so it doesn't render as chrome or plastic. Keyed to the chosen
+  // colour's finish (matt / gloss / textured / metallic).
+  if (product.material === "Aluminium") {
+    parts.push(ALUMINIUM_REALISM.base);
+    const finishKey = colour?.finish;
+    const finishRealism = finishKey && ALUMINIUM_REALISM.finishes[finishKey];
+    if (finishRealism) parts.push(finishRealism);
+  }
+
   return parts.join(", ");
 }
 
@@ -138,6 +150,10 @@ function shortProductLabel(brief) {
     .replace(/^Comp Door\s+/i, "")
     .replace(/\s*\([^)]*\)\s*/g, " ")
     .trim();
+
+  // Strip a trailing unit word (Window/Door/etc.) so it doesn't double up when
+  // we append the pluralised type word below (e.g. "Alitherm 400 windows").
+  name = name.replace(/\s+(Window|Door|Bifold Door|Patio Door|French Door|Roof Lantern)$/i, "").trim();
 
   // Pluralise the unit type sensibly
   const typeWord = {
@@ -360,6 +376,10 @@ function buildLivedInBlock(brief) {
 // =============================================================================
 function buildNegativePrompt(brief) {
   const parts = [UNIVERSAL_NEGATIVES, UK_NEGATIVES];
+  const product = PRODUCTS[brief.productId];
+  if (product?.material === "Aluminium") {
+    parts.push(ALUMINIUM_NEGATIVES);
+  }
   if (brief.people && brief.people.peopleType !== "none") {
     parts.push(PEOPLE_NEGATIVES);
   }
@@ -461,6 +481,34 @@ export function buildPrompt(brief) {
 }
 
 // =============================================================================
+// Positive-framing preferences (for Nano Banana / Gemini, per Google guidance).
+// Converts our most important "avoidances" into positive descriptive statements.
+// =============================================================================
+function buildPositivePreferences(brief) {
+  const product = PRODUCTS[brief.productId];
+  const prefs = [];
+
+  // Realism baseline, stated positively.
+  prefs.push("Render as a genuine photograph with authentic real-world materials, natural daylight, and true-to-life surfaces");
+
+  // Aluminium stated positively (the negatives become positives).
+  if (product?.material === "Aluminium") {
+    prefs.push("the metal frames are slim, flat-faced and matt powder-coated with crisp square machined edges, reading clearly as quality architectural aluminium");
+  }
+
+  // UK context, stated positively.
+  prefs.push("an authentically British setting with UK architectural and street details throughout");
+
+  // Full-elevation consistency, stated positively (reinforces the main clause).
+  if (brief.exteriorAspect === "front_full" || brief.exteriorAspect === "rear_full") {
+    prefs.push("every window and door across the whole building is the same matching product in the same finish");
+  }
+
+  return prefs.join(". ") + ".";
+}
+
+
+// =============================================================================
 // Format prompt by model — handles syntax differences
 // =============================================================================
 function formatForModel(body, negative, aspect, brief, modelMeta) {
@@ -481,9 +529,18 @@ function formatForModel(body, negative, aspect, brief, modelMeta) {
     mainPrompt = body + (brief.referenceImage ? `\n\nReference image: ${brief.referenceImage}` : "");
     negativePrompt = `Avoid: ${negative}`;
   } else if (brief.targetModel === "nanobanana") {
+    // Nano Banana (Gemini Image): Google's official guidance is to use POSITIVE
+    // framing ("describe what you want, not what you don't want") rather than a
+    // negative list, which this model handles poorly. So we fold the realism
+    // into the body and append only a short positive preference line. The model
+    // handles long detailed prompts and has a large context window — no trimming.
+    const positivePref = buildPositivePreferences(brief);
+    mainPrompt = body
+      + (positivePref ? ` ${positivePref}` : "")
+      + (brief.referenceImage ? `\n\nUse the supplied reference image as a guide for the property and composition.` : "");
     parameters = `Aspect ratio: ${aspect}`;
-    mainPrompt = body + (brief.referenceImage ? `\n\nUse reference image as guide.` : "");
-    negativePrompt = `Avoid in the image: ${negative}`;
+    // Keep a short, gentle preferences note instead of an aggressive "avoid" list.
+    negativePrompt = "Nano Banana works best with positive description (handled in the main prompt above) rather than a negative list. Key preferences are baked into the main prompt.";
   } else if (brief.targetModel === "veo3") {
     parameters = `Aspect ratio: ${aspect} | Duration: ${brief.duration || 8}s`;
     // Veo 3: trim length per shot — see length guardrail

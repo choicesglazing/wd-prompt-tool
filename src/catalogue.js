@@ -218,8 +218,8 @@ export const PRODUCTS = {
     material: "Aluminium",
     type: "window",
     installContext: "exterior",
-    visualDescriptor: "polyamide thermally-broken aluminium casement window with crisp clean sightlines, polyester powder-coated finish, slim profiles, contemporary aesthetic, marine-quality finish, available in fixed, side-hung, top-hung, tilt-and-turn or flush casement configurations",
-    signatureVisualCue: "crisp powder-coated aluminium frame, clean modern sightlines, contemporary architectural feel",
+    visualDescriptor: "slim aluminium casement window with narrow sightlines and a powder-coated finish, available in fixed, side-hung, top-hung, tilt-and-turn or flush casement configurations",
+    signatureVisualCue: "slim flat-faced aluminium frame with sharp 90-degree machined edges, narrow sightlines that look almost too thin to be uPVC, flush powder-coated surface, contemporary architectural feel, the frame noticeably more slender and precise than a plastic window",
     configurations: [
       "Single fixed light",
       "Single side-hung casement",
@@ -241,7 +241,7 @@ export const PRODUCTS = {
     material: "Aluminium",
     type: "door",
     installContext: "exterior",
-    visualDescriptor: "thermally-broken aluminium residential or French door with same profile sightlines as Alitherm 400 windows, single or double, open-in or open-out, multi-point locking, low threshold option",
+    visualDescriptor: "slim aluminium residential or French door matching the Alitherm 400 window sightlines, single or double, open-in or open-out, low threshold",
     signatureVisualCue: "matching system aesthetic to Alitherm 400 windows, crisp powder-coated finish",
     configurations: [
       "Single residential door",
@@ -260,8 +260,8 @@ export const PRODUCTS = {
     material: "Aluminium",
     type: "internal_screen",
     installContext: "interior",
-    visualDescriptor: "aluminium internal screening system replicating the steel-look industrial aesthetic, ultra-narrow 20mm sightlines, multi-pane gridded configuration evoking Crittall heritage windows, fixed glazed screens with hinged single or double doors, pivot or sliding door options",
-    signatureVisualCue: "Crittall-style narrow black or dark-finish aluminium grid mullions, multi-pane internal screen, industrial-heritage aesthetic",
+    visualDescriptor: "slim aluminium internal glazed screen with a steel-look industrial aesthetic, ultra-narrow sightlines, multi-pane gridded configuration evoking Crittall heritage windows, fixed glazed screens with hinged single or double doors, pivot or sliding door options",
+    signatureVisualCue: "ultra-narrow matt-black aluminium grid bars dividing the glass into equal panes, slim flat steel-look mullions with crisp square edges, industrial-heritage Crittall aesthetic, the bars genuinely thin and precise, dead-matt black powder finish absorbing light with no shine",
     configurations: [
       "Fixed screen, 2x2 grid",
       "Fixed screen, 3x3 grid",
@@ -281,7 +281,7 @@ export const PRODUCTS = {
     material: "Aluminium",
     type: "door",
     installContext: "exterior",
-    visualDescriptor: "high-end aluminium entrance door with bonded designer panel face, contemporary front door aesthetic, premium aesthetics with options for bold colour, integrated handle and hardware design, secure multi-point locking",
+    visualDescriptor: "premium aluminium entrance door with a flush bonded panel face, contemporary front door aesthetic, bold colour options, integrated handle and hardware design",
     signatureVisualCue: "premium aluminium entrance door with flush bonded panel face, contemporary architectural statement",
     configurations: [
       "Single door, solid panel",
@@ -302,7 +302,7 @@ export const PRODUCTS = {
     material: "Aluminium",
     type: "door",
     installContext: "exterior",
-    visualDescriptor: "premium aluminium entrance door with sleek thermally-broken profile, slim sightlines, available in single or double configuration, designer hardware, suitable for high-specification residential entrances",
+    visualDescriptor: "premium aluminium entrance door with a sleek slim profile, single or double configuration, designer hardware",
     signatureVisualCue: "premium aluminium entrance door, refined slim profile, elevated hardware",
     configurations: [
       "Single door",
@@ -321,8 +321,8 @@ export const PRODUCTS = {
     material: "Aluminium",
     type: "bifold",
     installContext: "exterior",
-    visualDescriptor: "aluminium bi-fold door with slim 122mm sightlines at junctions, polyamide thermal break, fully glazed clear panels, smooth running gear at head track, low threshold option, premium powder-coated finish, configurable from 2 to 7 panes folding internally or externally with optional traffic door",
-    signatureVisualCue: "ultra-slim 122mm sightlines at junctions, large glass area, fully glazed panels, smooth folding action",
+    visualDescriptor: "slim aluminium bi-fold door with narrow sightlines at the panel junctions, fully glazed clear panels, low threshold, powder-coated finish, configurable from 2 to 7 panes folding internally or externally with optional traffic door",
+    signatureVisualCue: "ultra-slim flat aluminium frames at the panel junctions, very narrow sightlines maximising glass, sharp machined edges, matt powder-coated surface, expanse of clear glass with thin precise dividing frames, smooth folding action, unmistakably slimmer than uPVC bifolds",
     configurations: [
       "2-pane (folds one way)",
       "3-pane (2+1 with traffic door)",
@@ -437,7 +437,7 @@ export const PRODUCTS = {
     material: "Aluminium",
     type: "roof_lantern",
     installContext: "exterior_roof",
-    visualDescriptor: "aluminium roof lantern with ultra-slim 38mm sightlines, polyester powder-coated thermally-broken aluminium frame, hidden bracket fixings, glass-supported corners with no corner posts, contemporary clean profile, fitted flush into a flat roof structure with visible plasterboard reveal at the internal junction",
+    visualDescriptor: "slim aluminium roof lantern with ultra-narrow sightlines, powder-coated frame, hidden bracket fixings, glass-supported corners with no corner posts, fitted flush into a flat roof with a visible plasterboard reveal at the internal junction",
     signatureVisualCue: "exceptionally slim 38mm aluminium sightlines, no corner posts (cantilevered glass corners), hidden brackets, modern minimalist appearance",
     configurations: [
       "Pyramid 4-rafter (square)",
@@ -865,14 +865,14 @@ export const MODEL_SYNTAX = {
     notes: "Excellent for ultra-realistic interiors, atmospheric light, technical detail. Less prone to over-stylisation than Midjourney. Best Open-Source quality."
   },
   nanobanana: {
-    label: "Nano Banana (Gemini Image)",
+    label: "Nano Banana 2 (Gemini Image)",
     type: "image",
     promptStyle: "natural_language",
     parameterFormat: "Aspect ratio: [aspect]",
-    referenceSyntax: "Provide reference image as input",
-    negativePromptHandling: "describe avoidances in natural language",
-    optimalPromptLength: "60-120 words, clean natural language",
-    notes: "Strong at clean compositions, product showcases, accurate text rendering. Less strong at moody atmospheric interiors with character work — for those prefer Flux or Midjourney."
+    referenceSyntax: "Provide reference image as input (supports up to 14 reference images)",
+    negativePromptHandling: "use POSITIVE framing — describe what you want, not what to avoid (Google official guidance). This tool folds preferences into the main prompt automatically.",
+    optimalPromptLength: "detailed is good — the model follows long, stacked prompts well and has a large context window; no need to simplify",
+    notes: "Per Google's official guide: use positive framing (e.g. 'flat matt powder-coated frame' rather than 'no chrome'), control the camera with photographic terms, and emphasise materiality and texture. Strong at clean compositions, product showcases, and accurate text. For moody atmospheric interiors, Flux or Midjourney can still edge it."
   },
   veo3: {
     label: "Veo 3 (Google)",
@@ -904,6 +904,30 @@ export const UNIVERSAL_NEGATIVES = "golden hour cliché, oversaturated, plastic-
 export const UK_NEGATIVES = "American suburb, American mailbox, fire hydrant, palm trees, stucco walls, adobe houses, left-hand drive vehicles, US power outlets, Big Ben, double-decker buses, London clichés, Mediterranean light, California sun, US street signage";
 
 export const PEOPLE_NEGATIVES = "uncanny valley face, six fingers, distorted hands, fused fingers, plastic skin, perfectly symmetrical face, dead eyes, AI-generated face artefacts, melted features, posed model studio look";
+
+// =============================================================================
+// MATERIAL REALISM — appearance language that tells the model how each material
+// actually behaves with light. Injected automatically by the prompt engine based
+// on product.material. Keep these visual, not technical.
+// =============================================================================
+export const ALUMINIUM_REALISM = {
+  // General surface character of architectural aluminium, true to real installs.
+  base: "real architectural aluminium with the characteristic flat, even, non-reflective surface of polyester powder-coating, fine micro-texture catching soft diffuse light rather than mirror reflections, crisp precisely-machined square-edged profiles with clean mitred corners and no visible welds, slim frame sightlines, subtle hairline shadow gaps between frame and sash, factory-finished consistency, the unmistakable look of quality powder-coated metal not plastic and not chrome",
+  // Finish-specific surface behaviour, keyed to the colour's `finish` string.
+  finishes: {
+    "matt powder": "dead-matt powder-coat finish that absorbs light with a soft velvety sheen, no gloss, no reflections, even uniform colour across the whole profile",
+    "gloss powder": "semi-gloss powder-coat finish with a smooth subtle sheen, gentle soft highlight along the edges of the profile, not mirror-like, not wet-looking",
+    "fine texture powder": "fine-textured powder-coat finish with a barely-perceptible orange-peel micro-texture, matt, tactile, light scattering softly across the surface",
+    "metallic powder": "metallic powder-coat finish with fine suspended metallic flake giving subtle depth and a soft directional shimmer in raking light, still matt overall, never chrome or polished"
+  }
+};
+
+// Negatives specific to aluminium so the model avoids the common failure modes.
+export const ALUMINIUM_NEGATIVES = "chrome frames, mirror-polished metal, shiny silver metallic frames, reflective metal, plastic-looking frames, uPVC chunky profiles, bulky thick frames, glossy wet-looking surface, brushed stainless steel look, bare unfinished aluminium, visible weld beads on aluminium, rounded soft profile edges";
+
+// =============================================================================
+// NEGATIVE PROMPT LIBRARY (continued)
+// =============================================================================
 
 // =============================================================================
 // MUSIC LIBRARY for video — search-term based, library-aware

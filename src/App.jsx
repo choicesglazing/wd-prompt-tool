@@ -87,6 +87,7 @@ export default function App() {
 
   const [shootLocation, setShootLocation] = useState("exterior");
   const [exteriorAspect, setExteriorAspect] = useState("front_full");
+  const [elevationLayout, setElevationLayout] = useState("");
   const [room, setRoom] = useState("Kitchen");
   const [interiorStyle, setInteriorStyle] = useState("");
   const [exteriorVisible, setExteriorVisible] = useState("");
@@ -184,8 +185,8 @@ export default function App() {
     if (product?.installContext === "interior" && shootLocation === "exterior") {
       setShootLocation("internal_partition");
     }
-    if (product?.installContext === "exterior_roof" && shootLocation !== "interior") {
-      // roof lantern internal viewing is the normal use case
+    if (product?.installContext === "exterior_roof" && shootLocation === "exterior") {
+      setShootLocation("interior");
     }
   }, [productId, county, assetType, platform, room, shootLocation]); // eslint-disable-line
 
@@ -215,6 +216,13 @@ export default function App() {
     if (product?.installContext === "exterior_roof" && shootLocation === "exterior") {
       arr.push("Roof lanterns are typically photographed internally looking up. Consider switching to internal view.");
     }
+    // Single-light configuration + full-house view = mismatched-window risk
+    const cfg = (configuration || "").toLowerCase();
+    const isSingleLight = cfg.startsWith("single") || cfg.includes("one-light");
+    const isFullView = shootLocation === "exterior" && (exteriorAspect === "front_full" || exteriorAspect === "rear_full");
+    if (isSingleLight && isFullView) {
+      arr.push("You've chosen a single-window configuration with a full-house view. The tool now forces every window on the house to match your product — but for the cleanest result either use a 'partial' view focused on the product, or fill in 'Elevation make-up' to describe the other openings.");
+    }
     // Atmospheric + people in motion
     if (scenePresetId === "atmospheric" && peopleType !== "none" && peopleAction?.toLowerCase().includes("walk")) {
       arr.push("Atmospheric mood + figure in motion is harder to achieve. Consider lifestyle warmth scene preset for active subjects, or atmospheric mood with a still subject.");
@@ -243,7 +251,7 @@ export default function App() {
       arr.push("Interior with visible exterior + people creates multiple depth planes. Expect to regenerate several attempts to get a clean result.");
     }
     return arr;
-  }, [product, shootLocation, scenePresetId, peopleType, peopleAction, hardware, assetType, duration, platform, targetModel, exteriorVisible]);
+  }, [product, shootLocation, scenePresetId, peopleType, peopleAction, hardware, assetType, duration, platform, targetModel, exteriorVisible, configuration, exteriorAspect]);
 
   // ---------- Generate ----------
   function handleGenerate() {
@@ -272,6 +280,7 @@ export default function App() {
 
       shootLocation,
       exteriorAspect,
+      elevationLayout,
       room,
       interiorStyle,
       exteriorVisible,
@@ -345,6 +354,7 @@ export default function App() {
         // location
         shootLocation={shootLocation} setShootLocation={setShootLocation}
         exteriorAspect={exteriorAspect} setExteriorAspect={setExteriorAspect}
+        elevationLayout={elevationLayout} setElevationLayout={setElevationLayout}
         room={room} setRoom={setRoom}
         interiorStyle={interiorStyle} setInteriorStyle={setInteriorStyle}
         exteriorVisible={exteriorVisible} setExteriorVisible={setExteriorVisible}
@@ -401,6 +411,7 @@ function FormPanel(props) {
     hardware, setHardware,
     product, colourSet, hardwareSchema,
     shootLocation, setShootLocation, exteriorAspect, setExteriorAspect,
+    elevationLayout, setElevationLayout,
     room, setRoom, interiorStyle, setInteriorStyle,
     exteriorVisible, setExteriorVisible, partitionRooms, setPartitionRooms,
     county, setCounty, housingId, setHousingId, housingList,
@@ -532,6 +543,20 @@ function FormPanel(props) {
             <select className="wd-select" value={exteriorAspect} onChange={(e) => setExteriorAspect(e.target.value)}>
               {EXTERIOR_ASPECTS.map(a => <option key={a.id} value={a.id}>{a.label}</option>)}
             </select>
+          </Field>
+        )}
+
+        {shootLocation === "exterior" && (exteriorAspect === "front_full" || exteriorAspect === "rear_full") && (
+          <Field
+            label="Elevation make-up (optional)"
+            hint="Describe the other openings on the elevation so they're rendered as YOUR product too. The chosen product, colour and style are applied to all of them. Leave blank to just enforce 'all windows match'."
+          >
+            <input
+              className="wd-input"
+              value={elevationLayout}
+              onChange={(e) => setElevationLayout(e.target.value)}
+              placeholder="e.g. a bay window to the ground floor, two casements above, a front door to the right"
+            />
           </Field>
         )}
 

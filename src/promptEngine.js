@@ -61,6 +61,16 @@ function buildProductDescription(brief) {
   // Configuration
   if (brief.configuration) {
     parts.push(`configuration: ${brief.configuration}`);
+
+    // Bay windows need explicit geometry or the model renders them flat.
+    const cfg = brief.configuration.toLowerCase();
+    if (cfg.includes("bay")) {
+      let bayGeometry = "true bay window projecting outward from the facade, the individual lights set at angles to wrap around the bay, distinct returns at each side, period-appropriate bay proportions";
+      if (cfg.includes("splayed")) bayGeometry += ", gently splayed angled bay";
+      else if (cfg.includes("canted")) bayGeometry += ", canted bay with angled flat side returns";
+      else if (cfg.includes("square")) bayGeometry += ", square bay with perpendicular side returns";
+      parts.push(bayGeometry);
+    }
   }
 
   // Colour with RAL/hex
@@ -111,6 +121,56 @@ function buildProductDescription(brief) {
 }
 
 // =============================================================================
+// Helper — short product label + finish for the consistency clause
+// e.g. "Heritage Flush Sash uPVC windows in Anthracite Grey"
+// =============================================================================
+function shortProductLabel(brief) {
+  const product = PRODUCTS[brief.productId];
+  if (!product) return "windows and doors";
+
+  // A concise, human-readable product family name (strip the manufacturer
+  // and bracketed sub-name so the clause reads naturally in a prompt).
+  let name = product.name
+    .replace(/^Deceuninck\s+/i, "")
+    .replace(/^Smart\s+/i, "")
+    .replace(/^Hurst\s+/i, "")
+    .replace(/^Gower Joinery\s+/i, "")
+    .replace(/^Comp Door\s+/i, "")
+    .replace(/\s*\([^)]*\)\s*/g, " ")
+    .trim();
+
+  // Pluralise the unit type sensibly
+  const typeWord = {
+    window: "windows",
+    sash_window: "sash windows",
+    door: "doors",
+    french_door: "French doors",
+    patio_door: "patio doors",
+    bifold: "bifold doors",
+    internal_screen: "internal screens",
+    roof_lantern: "roof lanterns"
+  }[product.type] || "windows and doors";
+
+  const material = product.material ? `${product.material} ` : "";
+
+  // Finish / colour
+  const colourSet = COLOUR_SETS[product.colours] || [];
+  const colour = colourSet.find(c => c.name === brief.colourName);
+  const finishStr = colour ? ` in matching ${colour.name}` : "";
+
+  return `${name} ${material}${typeWord}${finishStr}`.replace(/\s+/g, " ").trim();
+}
+
+// =============================================================================
+// Helper — build the whole-elevation consistency clause (Option 1)
+// Ensures every opening on the visible elevation matches the chosen product.
+// =============================================================================
+function buildConsistencyClause(brief) {
+  const label = shortProductLabel(brief);
+  return `every window and door visible on this elevation is the same ${label}, consistent frame style, profile, glazing-bar treatment and colour throughout the whole building, all openings matching as a coordinated whole-house installation`;
+}
+
+// =============================================================================
 // Build the location/context block
 // =============================================================================
 function buildLocationContext(brief) {
@@ -127,18 +187,39 @@ function buildLocationContext(brief) {
       const aspectMap = {
         "front_full": "full view of the front elevation showing the whole house",
         "front_partial": "partial view of the front of the house, framing focused on the product",
-        "rear_full": "full view of the rear elevation",
+        "rear_full": "full view of the rear elevation showing the whole rear of the house",
         "rear_partial": "partial view of the rear of the house, framing focused on the product"
       };
       parts.push(aspectMap[brief.exteriorAspect] || "");
+
+      const isFullView = brief.exteriorAspect === "front_full" || brief.exteriorAspect === "rear_full";
+      if (isFullView) {
+        // Option 2 — optional elevation layout described by the user.
+        // Applies the chosen product to all the openings the user lists.
+        if (brief.elevationLayout && brief.elevationLayout.trim()) {
+          parts.push(`elevation make-up: ${brief.elevationLayout.trim()}, all of these openings fitted with the same product`);
+        }
+        // Option 1 — consistency clause (always added on full views).
+        parts.push(buildConsistencyClause(brief));
+      }
     }
   } else if (brief.shootLocation === "interior") {
-    // Internal room
-    if (brief.room) {
-      parts.push(`interior view of a ${brief.room.toLowerCase()}`);
-    }
-    if (brief.interiorStyle) {
-      parts.push(`styled as ${brief.interiorStyle.toLowerCase()}`);
+    const product = PRODUCTS[brief.productId];
+    // Roof lanterns are shown from inside looking up into the lantern.
+    if (product?.type === "roof_lantern") {
+      parts.push(`interior view looking upward at the roof lantern set into the ceiling of a ${(brief.room || "kitchen extension").toLowerCase()}`);
+      parts.push("the slim aluminium lantern frame framing bright sky above, daylight pouring down into the room, plasterboard reveal visible where the lantern meets the flat roof");
+      if (brief.interiorStyle) {
+        parts.push(`room styled as ${brief.interiorStyle.toLowerCase()}`);
+      }
+    } else {
+      // Internal room
+      if (brief.room) {
+        parts.push(`interior view of a ${brief.room.toLowerCase()}`);
+      }
+      if (brief.interiorStyle) {
+        parts.push(`styled as ${brief.interiorStyle.toLowerCase()}`);
+      }
     }
     if (brief.county && brief.housingId) {
       const housingList = HOUSING_STOCK[brief.county] || [];
@@ -177,7 +258,7 @@ function buildCinematography(brief) {
   if (brief.lightingDescription) parts.push(brief.lightingDescription);
 
   // Ground conditions
-  if (brief.groundDescription && brief.groundDescription) parts.push(brief.groundDescription);
+  if (brief.groundDescription) parts.push(brief.groundDescription);
 
   // Season
   if (brief.seasonDescription) parts.push(brief.seasonDescription);
@@ -281,6 +362,10 @@ function buildNegativePrompt(brief) {
   const parts = [UNIVERSAL_NEGATIVES, UK_NEGATIVES];
   if (brief.people && brief.people.peopleType !== "none") {
     parts.push(PEOPLE_NEGATIVES);
+  }
+  // Full-elevation views: guard against the model inventing mismatched windows.
+  if (brief.exteriorAspect === "front_full" || brief.exteriorAspect === "rear_full") {
+    parts.push("mismatched windows, inconsistent window styles across the house, differing frame colours between openings, mixture of old and new windows, some windows a different design, contrasting window finishes on the same building");
   }
   // Macro/technical context-specific
   if (brief.scenePresetId === "technical") {
@@ -416,14 +501,34 @@ function formatForModel(body, negative, aspect, brief, modelMeta) {
 function trimToLength(text, targetWords) {
   const words = text.split(/\s+/);
   if (words.length <= targetWords + 10) return text;
-  // Trim by removing later sentences
-  const sentences = text.split(/\. /);
-  let result = sentences[0]; // Always include the first sentence even if it's long
+
+  const sentences = text.split(/\. /).map(s => s.trim()).filter(Boolean);
+  if (sentences.length === 0) return text;
+
+  // Priority sentences must survive the trim even when later content is dropped:
+  // (1) the opening product description, and (2) the whole-house consistency clause.
+  const isPriority = (s) =>
+    /every window and door visible on this elevation/i.test(s) ||
+    /elevation make-up/i.test(s);
+
+  const priority = [sentences[0]];
+  sentences.slice(1).forEach(s => { if (isPriority(s)) priority.push(s); });
+
+  // Start from the priority set, then fill with remaining sentences in order
+  // until we approach the word budget.
+  let kept = [...priority];
+  const wordCount = (arr) => arr.join(". ").split(/\s+/).length;
+
   for (let i = 1; i < sentences.length; i++) {
-    const candidate = result + ". " + sentences[i];
-    if (candidate.split(/\s+/).length > targetWords) break;
-    result = candidate;
+    const s = sentences[i];
+    if (kept.includes(s)) continue;
+    if (wordCount([...kept, s]) > targetWords) continue;
+    kept.push(s);
   }
+
+  // Re-order kept sentences to their original sequence for natural reading
+  const ordered = sentences.filter(s => kept.includes(s));
+  let result = ordered.join(". ");
   return result + (result.endsWith(".") ? "" : ".");
 }
 

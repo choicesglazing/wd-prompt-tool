@@ -24,7 +24,7 @@ import {
   FRAMING_LENS,
   getElevationSuggestions
 } from "./catalogue.js";
-import { buildPrompt, buildVariations, buildCarousel, buildVideoShotList, frontSettingIndexForSeed, frontSettingCount } from "./promptEngine.js";
+import { buildPrompt, buildVariations, buildCarousel, buildVideoShotList, frontSettingIndexForSeed, frontSettingCount, interiorSignatureForSeed, interiorFurnitureIndexForSeed, interiorFurnitureCount, roomKeyForDisplay } from "./promptEngine.js";
 
 // =========================================================================
 // Helpers
@@ -126,6 +126,10 @@ export default function App() {
   // Remembers recently-used full-front setting indices so consecutive
   // generations don't reuse the same frontage. Holds up to half the list.
   const recentFrontSettings = useRef([]);
+  // Remembers recently-used interior scenery signatures, keyed by room, so the
+  // same walls/floor/furniture combination isn't repeated on consecutive
+  // generations of the same room.
+  const recentInteriors = useRef({});
   const [activeFrameTab, setActiveFrameTab] = useState(0);
 
   // ---------- Derived state ----------
@@ -270,24 +274,85 @@ export default function App() {
 
     const brief = {
       // Fresh seed each generation so interiors and exteriors vary (walls,
-      // floor, furniture, surroundings, house number) every time. For full
-      // front views we actively avoid reusing a recently-shown frontage by
-      // rerolling the seed until it maps to a setting not used recently.
+      // floor, furniture, surroundings, house number) every time. We actively
+      // avoid reusing a recently-shown scene by rerolling the seed: for full
+      // front views we avoid recent frontages; for interiors we avoid recent
+      // walls/floor/furniture combinations for the room being shown.
       rotationSeed: (() => {
-        const total = frontSettingCount();
-        // Remember up to half the list so we cycle through plenty before repeating.
-        const memory = Math.max(1, Math.min(total - 1, Math.floor(total / 2)));
-        let seed = Math.floor(Math.random() * 1000000);
-        for (let attempt = 0; attempt < 40; attempt++) {
-          const idx = frontSettingIndexForSeed(seed);
-          if (!recentFrontSettings.current.includes(idx)) {
-            recentFrontSettings.current.push(idx);
-            if (recentFrontSettings.current.length > memory) recentFrontSettings.current.shift();
-            break;
+        const isInterior = shootLocation === "interior" || shootLocation === "internal_partition";
+        const isFullFront = shootLocation === "exterior" && exteriorAspect === "front_full";
+
+        // Helper to pick a seed avoiding a 'recent' list via a signature fn.
+        const rollAvoiding = (recentList, memory, sigFn) => {
+          let s = Math.floor(Math.random() * 1000000);
+          for (let attempt = 0; attempt < 60; attempt++) {
+            const sig = sigFn(s);
+            if (!recentList.includes(sig)) {
+              recentList.push(sig);
+              if (recentList.length > memory) recentList.shift();
+              return s;
+            }
+            s = Math.floor(Math.random() * 1000000);
           }
-          seed = Math.floor(Math.random() * 1000000);
+          return s;
+        };
+
+        if (isInterior) {
+          const roomKey = shootLocation === "internal_partition"
+            ? "living_room"
+            : roomKeyForDisplay(room);
+          if (!recentInteriors.current[roomKey]) {
+            recentInteriors.current[roomKey] = { combos: [], furniture: [] };
+          }
+          const mem = recentInteriors.current[roomKey];
+          // Furniture is the dominant, most visible element, so it's the primary
+          // thing to vary. Avoid repeating it within a window that's always
+          // satisfiable for the room's furniture count. The whole-combo guard is
+          // secondary and kept small so it never corners the search in rooms
+          // with few furniture options (which previously forced repeats).
+          const furnCount = interiorFurnitureCount(roomKey);
+          const furnMemory = Math.max(1, Math.min(4, furnCount - 1));
+          const comboMemory = 2;
+          let s = Math.floor(Math.random() * 1000000);
+          let fallback = s;
+          // First pass: satisfy BOTH furniture and combo.
+          let chosen = null;
+          for (let attempt = 0; attempt < 60; attempt++) {
+            const sig = interiorSignatureForSeed(roomKey, s);
+            const furn = interiorFurnitureIndexForSeed(roomKey, s);
+            if (attempt === 0) fallback = s;
+            if (!mem.furniture.includes(furn) && !mem.combos.includes(sig)) { chosen = s; break; }
+            s = Math.floor(Math.random() * 1000000);
+          }
+          // Second pass: if that failed, at least guarantee different furniture.
+          if (chosen === null) {
+            let s2 = Math.floor(Math.random() * 1000000);
+            for (let attempt = 0; attempt < 60; attempt++) {
+              const furn = interiorFurnitureIndexForSeed(roomKey, s2);
+              if (!mem.furniture.includes(furn)) { chosen = s2; break; }
+              s2 = Math.floor(Math.random() * 1000000);
+            }
+          }
+          if (chosen === null) chosen = fallback;
+          mem.combos.push(interiorSignatureForSeed(roomKey, chosen));
+          if (mem.combos.length > comboMemory) mem.combos.shift();
+          mem.furniture.push(interiorFurnitureIndexForSeed(roomKey, chosen));
+          if (mem.furniture.length > furnMemory) mem.furniture.shift();
+          return chosen;
         }
-        return seed;
+
+        if (isFullFront) {
+          const total = frontSettingCount();
+          const memory = Math.max(1, Math.min(total - 1, Math.floor(total / 2)));
+          return rollAvoiding(
+            recentFrontSettings.current,
+            memory,
+            (s) => frontSettingIndexForSeed(s)
+          );
+        }
+
+        // Other views (partial/rear exterior): plain fresh seed is enough.
+        return Math.floor(Math.random() * 1000000);
       })(),
       productId,
       configuration,

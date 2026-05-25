@@ -68,6 +68,46 @@ export function frontSettingCount() {
   return (EXTERIOR_SCENERY.frontSetting || []).length;
 }
 
+// Interior equivalent: a 'signature' string of the walls/floor/furniture/
+// ornament indices a given (room, seed) maps to. The UI uses this to avoid
+// repeating the same interior combination on consecutive generations.
+export function interiorSignatureForSeed(roomKey, seed = 0) {
+  const s = ROOM_SCENERY[roomKey];
+  if (!s) return `none`;
+  return [
+    seededIndex((s.walls || []).length, seed, 1),
+    seededIndex((s.floor || []).length, seed, 2),
+    seededIndex((s.furniture || []).length, seed, 3),
+    seededIndex((s.ornaments || []).length, seed, 4)
+  ].join("-");
+}
+// Rough size of the interior combination space for a room (used to size the
+// anti-repeat memory window sensibly).
+export function interiorComboCount(roomKey) {
+  const s = ROOM_SCENERY[roomKey];
+  if (!s) return 1;
+  return Math.max(1,
+    (s.walls || [1]).length *
+    (s.furniture || [1]).length
+  );
+}
+// The furniture index a (room, seed) maps to — furniture is the most visually
+// dominant element, so the UI avoids repeating it specifically as well as the
+// whole combination.
+export function interiorFurnitureIndexForSeed(roomKey, seed = 0) {
+  const s = ROOM_SCENERY[roomKey];
+  if (!s) return 0;
+  return seededIndex((s.furniture || []).length, seed, 3);
+}
+export function interiorFurnitureCount(roomKey) {
+  const s = ROOM_SCENERY[roomKey];
+  return (s?.furniture || []).length || 1;
+}
+// Map a display room name to its scenery key (exposed for the UI).
+export function roomKeyForDisplay(room) {
+  return roomKeyFor(room);
+}
+
 // Map a display room name to a scenery/lived-in key.
 function roomKeyFor(room) {
   const roomMap = {

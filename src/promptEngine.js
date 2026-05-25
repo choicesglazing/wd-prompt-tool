@@ -48,8 +48,24 @@ function pickLivedIn(scene, level, rotationSeed = 0) {
 // don't all advance together and produce correlated, repetitive combinations.
 function seededPick(list, seed = 0, salt = 0) {
   if (!Array.isArray(list) || list.length === 0) return "";
-  const idx = Math.abs((seed * 31 + salt * 101 + 7)) % list.length;
+  const idx = seededIndex(list.length, seed, salt);
   return list[idx];
+}
+
+// The raw index a (seed, salt) maps to for a list of given length.
+function seededIndex(length, seed = 0, salt = 0) {
+  if (!length) return 0;
+  return Math.abs((seed * 31 + salt * 101 + 7)) % length;
+}
+
+// Exposed so the UI can ensure consecutive generations don't reuse the same
+// full-front setting. Returns the frontSetting index for a given seed.
+export function frontSettingIndexForSeed(seed = 0) {
+  const list = EXTERIOR_SCENERY.frontSetting || [];
+  return seededIndex(list.length, seed, 9);
+}
+export function frontSettingCount() {
+  return (EXTERIOR_SCENERY.frontSetting || []).length;
 }
 
 // Map a display room name to a scenery/lived-in key.

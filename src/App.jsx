@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import {
   PRODUCTS,
   COLOUR_SETS,
@@ -24,7 +24,7 @@ import {
   FRAMING_LENS,
   getElevationSuggestions
 } from "./catalogue.js";
-import { buildPrompt, buildVariations, buildCarousel, buildVideoShotList } from "./promptEngine.js";
+import { buildPrompt, buildVariations, buildCarousel, buildVideoShotList, frontSettingIndexForSeed, frontSettingCount } from "./promptEngine.js";
 
 // =========================================================================
 // Helpers
@@ -123,6 +123,9 @@ export default function App() {
 
   // ---------- Output state ----------
   const [output, setOutput] = useState(null);
+  // Remembers recently-used full-front setting indices so consecutive
+  // generations don't reuse the same frontage. Holds up to half the list.
+  const recentFrontSettings = useRef([]);
   const [activeFrameTab, setActiveFrameTab] = useState(0);
 
   // ---------- Derived state ----------
@@ -266,10 +269,26 @@ export default function App() {
     })();
 
     const brief = {
-      // Fresh random seed each time Generate is clicked, so interiors and
-      // exteriors vary (walls, floor, furniture, surroundings, house number)
-      // on every generation rather than always producing the same scene.
-      rotationSeed: Math.floor(Math.random() * 100000),
+      // Fresh seed each generation so interiors and exteriors vary (walls,
+      // floor, furniture, surroundings, house number) every time. For full
+      // front views we actively avoid reusing a recently-shown frontage by
+      // rerolling the seed until it maps to a setting not used recently.
+      rotationSeed: (() => {
+        const total = frontSettingCount();
+        // Remember up to half the list so we cycle through plenty before repeating.
+        const memory = Math.max(1, Math.min(total - 1, Math.floor(total / 2)));
+        let seed = Math.floor(Math.random() * 1000000);
+        for (let attempt = 0; attempt < 40; attempt++) {
+          const idx = frontSettingIndexForSeed(seed);
+          if (!recentFrontSettings.current.includes(idx)) {
+            recentFrontSettings.current.push(idx);
+            if (recentFrontSettings.current.length > memory) recentFrontSettings.current.shift();
+            break;
+          }
+          seed = Math.floor(Math.random() * 1000000);
+        }
+        return seed;
+      })(),
       productId,
       configuration,
       colourName,

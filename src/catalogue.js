@@ -1648,7 +1648,14 @@ export const EXTERIOR_SCENERY = {
     "a neat front lawn bordered by a clipped hedge",
     "a paved frontage with potted plants either side of the door",
     "a low brick garden wall with a wrought-iron gate",
-    "a simple paved forecourt with a doormat and bootscraper"
+    "a simple paved forecourt with a doormat and bootscraper",
+    "a herringbone brick-paved drive with clipped topiary in pots",
+    "a resin-bound driveway with recessed ground lights",
+    "a stone-flagged path between lawn borders",
+    "a plain tarmac drive with a single step to the door",
+    "a shared grass verge frontage with no boundary",
+    "a walled courtyard threshold with climbing greenery",
+    "a wide open driveway leading to a garage"
   ],
   // Planting / greenery (deliberately varied — some with trees, some without)
   planting: [
@@ -1658,7 +1665,14 @@ export const EXTERIOR_SCENERY = {
     "low lavender and grasses softening the base of the wall",
     "a tidy lawn with no trees, open and uncluttered",
     "seasonal bedding plants in a narrow border",
-    "a mature front garden with planting but open sky above"
+    "a mature front garden with planting but open sky above",
+    "no planting at all, a clean hard-landscaped frontage",
+    "architectural grasses and box balls in contemporary planters",
+    "a cottage-garden tumble of perennials by the path",
+    "newly planted saplings and fresh turf on a new development",
+    "a single specimen shrub in a large pot by the door",
+    "ivy or jasmine softening a boundary wall",
+    "a gravel bed with drought-tolerant Mediterranean planting"
   ],
   // Wider surroundings / backdrop
   surroundings: [
@@ -1668,7 +1682,14 @@ export const EXTERIOR_SCENERY = {
     "a glimpse of countryside beyond the rooftops",
     "mature street trees set well back, not dominating the frame",
     "an adjacent terrace continuing along the pavement",
-    "a clear uncluttered backdrop keeping focus on the house"
+    "a clear uncluttered backdrop keeping focus on the house",
+    "a modern estate street with tidy kerbs behind",
+    "distant rolling fields and hedgerows beyond",
+    "a conservation-area street with period townscape behind",
+    "an urban backdrop of brick facades with little greenery",
+    "a leafy suburban avenue with dappled light",
+    "a village lane with a grass verge opposite",
+    "open parkland or a green just across the road"
   ],
   // Sky / atmosphere
   sky: [
@@ -1676,15 +1697,24 @@ export const EXTERIOR_SCENERY = {
     "a gentle blue sky with light high cloud",
     "a crisp clear sky with soft sunshine",
     "a calm pale-grey sky giving even diffuse light",
-    "warm late-afternoon light with long soft shadows"
+    "warm late-afternoon light with long soft shadows",
+    "a fresh morning sky with cool clear light",
+    "a bright hazy sky with diffuse high cloud",
+    "a clear sky just after light rain, surfaces still damp and reflective",
+    "soft golden-hour light raking across the facade",
+    "a flat even white sky giving shadow-free product clarity"
   ],
   // Explicit house numbers so the model doesn't invent one (it tends to copy a
-  // stray number like a lens '24mm' onto the door). A varied spread.
+  // stray number like a lens '24mm' onto the door). A wide, varied spread.
   houseNumber: [
     "the house number 7", "the house number 12", "the house number 18",
     "the house number 3", "the house number 29", "the house number 41",
     "the house number 56", "the house number 9", "the house number 33",
-    "the house number 21", "the house number 64", "the house number 15"
+    "the house number 21", "the house number 64", "the house number 15",
+    "the house number 4", "the house number 27", "the house number 38",
+    "the house number 52", "the house number 11", "the house number 6",
+    "the house number 45", "the house number 19", "the house number 72",
+    "the house number 8", "the house number 31", "the house number 14"
   ],
   // Front door colours for context houses (only used when the product itself
   // isn't the door, to vary the look of the entrance in the scene)
@@ -1694,13 +1724,14 @@ export const EXTERIOR_SCENERY = {
   ],
   // Whole-frontage CHARACTER for full front views. Deliberately spans very
   // different settings — hard urban, leafy suburban, open rural, paved
-  // forecourts — so full front elevations don't all look the same. Several
-  // have NO trees or greenery at all.
+  // forecourts — so full front elevations don't all look the same. Many
+  // have NO trees or greenery at all. Kept large (24+) and combined with
+  // anti-repeat logic in the engine so consecutive generations differ.
   frontSetting: [
     "set directly on the pavement of an urban street with no front garden, the front wall meeting the footpath, parked cars along the kerb, neighbouring facades continuing on either side",
-    "with a small paved forecourt and no greenery, clean hard landscaping, bin store to one side, an ordinary residential street behind",
+    "with a small paved forecourt and no greenery, clean hard landscaping, a bin store to one side, an ordinary residential street behind",
     "with a tidy open lawn frontage and no fence, a clear uncluttered approach, open sky above and no trees in frame",
-    "with a low brick boundary wall and a short path to the door, a couple of potted plants by the entrance, quiet street",
+    "with a low brick boundary wall and a short path to the door, a couple of potted plants by the entrance, a quiet street",
     "behind a clipped evergreen hedge with a wrought-iron gate, a neat front garden, established but not overgrown",
     "with a block-paved driveway filling the frontage, one car parked, minimal planting, a typical suburban cul-de-sac feel",
     "on a leafy residential road with mature street trees set back behind the house, dappled light, established gardens nearby",
@@ -1708,7 +1739,21 @@ export const EXTERIOR_SCENERY = {
     "in a terraced row where identical houses continue left and right, on-street parking, an urban townscape with little greenery",
     "with a generous open driveway and double garage, contemporary hard landscaping, a modern estate street behind",
     "set back behind a white-rendered low wall and a wide gravel drive, a few architectural planters, crisp and uncluttered",
-    "on a corner plot with a wrapping low wall, open aspect on two sides, neighbouring houses at a distance"
+    "on a corner plot with a wrapping low wall, open aspect on two sides, neighbouring houses at a distance",
+    "fronting directly onto a narrow cobbled lane, no front garden, characterful older townscape, uneven historic paving",
+    "with a deep front garden of mature shrubs and a winding path, a private established feel, soft greenery framing the approach",
+    "with a simple tarmac drive and a single step up to the door, no planting, a plain practical suburban frontage",
+    "behind iron railings on a raised pavement, a few steps up to the entrance, a Georgian-style townhouse street",
+    "with an open-plan grass verge frontage shared along the street, no boundary, a 1960s-70s estate character",
+    "with a herringbone brick-paved drive and clipped box balls in pots, a smart contemporary kerb appeal, tidy and minimal",
+    "on a rural lane with a post-and-rail fence and a grass verge, open countryside behind, expansive sky",
+    "with a resin-bound driveway and recessed LED ground lights, sleek modern frontage, low architectural planting",
+    "in a conservation-area street with stone setts and bollards, no front garden, dignified period townscape",
+    "with a small walled courtyard frontage and a paved threshold, climbing greenery on the wall, an intimate enclosed feel",
+    "with a sweeping shared driveway and lawns, a substantial detached setting, open and green but no overhanging trees",
+    "with a plain paved frontage and recycling bins neatly stored, an honest everyday suburban street, overcast and ordinary",
+    "set among newly turfed lawns and saplings on a brand-new development, clean kerbs and fresh tarmac, sparse young planting",
+    "with a flint-and-brick boundary wall and a timber gate, a village-edge setting, hedgerow beyond and open sky"
   ]
 };
 

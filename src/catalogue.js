@@ -189,6 +189,30 @@ export const PRODUCTS = {
     suitabilityNotes: "Period rear elevations, garden-facing dining rooms, character properties."
   },
 
+  // ---------- uPVC Conservatory ----------
+  upvcConservatory: {
+    name: "uPVC Conservatory",
+    material: "uPVC",
+    type: "conservatory",
+    installContext: "exterior",
+    visualDescriptor: "a uPVC conservatory built onto the rear of a house, white uPVC frames with large glazed panels, a glazed pitched roof, low uPVC-clad or matching-brick dwarf walls, glazed double doors opening onto the garden",
+    signatureVisualCue: "a real uPVC conservatory as a glazed garden room extension, slim white uPVC frames, polycarbonate or glass roof glazing on a pitched conservatory roof, attached to the back of a British home, set on a patio or lawn",
+    configurations: [
+      "Lean-to (Mediterranean) — single-slope roof, simple rectangular",
+      "Edwardian (Georgian) — square/rectangular, pitched hipped roof, flat front",
+      "Victorian 3-facet — bay front, steep pitched roof, ornate ridge",
+      "Victorian 5-facet — rounded bay front, steep pitched roof, ornate ridge",
+      "Gable-end — tall upright front gable, high apex roof",
+      "P-shaped — Victorian bay plus a lean-to section (L-shaped footprint)",
+      "T-shaped — central projecting gable off an Edwardian/Victorian run",
+      "L-shaped — lean-to and Edwardian sections forming an L"
+    ],
+    colours: "deceuninck",
+    hardware: ["frenchDoor"],
+    glazingBars: ["None", "Applied Georgian bars on the windows"],
+    suitabilityNotes: "Glazed uPVC garden-room extensions in the full range of UK styles. Shown from the garden as the whole structure. uPVC only."
+  },
+
   // ---------- Hurst uPVC doors ----------
   hurstDoor: {
     name: "Hurst uPVC Door",
@@ -510,6 +534,38 @@ export function translateConfiguration(cfg, product) {
   if (!cfg) return "";
   const c = cfg.toLowerCase();
   const type = product?.type;
+
+  // ---- CONSERVATORIES (whole-structure styles) ----
+  if (type === "conservatory") {
+    // Hybrids MUST be checked first — their descriptions mention "lean-to",
+    // "Edwardian" and "Victorian", which would otherwise match the single-style
+    // branches below.
+    if (c.includes("p-shaped") || c.includes("p shaped")) {
+      return "a P-shaped uPVC conservatory: a large hybrid combining a faceted Victorian bay section with a long lean-to section, forming an L-shaped footprint (the shape of a letter P from above), glazed throughout with a mix of pitched and mono-pitch glazed roofs, low dwarf walls with glazed panels above";
+    }
+    if (c.includes("t-shaped") || c.includes("t shaped")) {
+      return "a T-shaped uPVC conservatory: a large symmetrical design with a central projecting gable or bay extending into the garden off a long Edwardian/Victorian run, forming a T footprint, glazed throughout with pitched glazed roofs, low dwarf walls with glazed panels above";
+    }
+    if (c.includes("l-shaped") || c.includes("l shaped")) {
+      return "an L-shaped uPVC conservatory: a hybrid uniting a lean-to section and an Edwardian section to form an L-shaped footprint, glazed throughout with a mix of pitched and mono-pitch glazed roofs, low dwarf walls with glazed panels above";
+    }
+    if (c.includes("lean-to") || c.includes("mediterranean")) {
+      return "a lean-to (Mediterranean) style uPVC conservatory: a simple rectangular glazed room with a single-slope (mono-pitch) glazed roof sloping down from the house wall, clean modern lines, low dwarf walls with large glazed panels above, glazed doors to the garden";
+    }
+    if (c.includes("gable")) {
+      return "a gable-end style uPVC conservatory: a glazed room with a tall, upright triangular front gable where the front glazing rises full-height to meet the apex of a high-pitched glazed roof, a grand and airy appearance, low dwarf walls with tall glazed panels above";
+    }
+    if (c.includes("victorian") && c.includes("5")) {
+      return "a Victorian 5-facet style uPVC conservatory: an ornate glazed room with a rounded bay front made of five angled glazed facets, a steeply pitched glazed roof with a decorative ridge crest, period-elegant proportions, low dwarf walls with tall glazed panels above";
+    }
+    if (c.includes("victorian")) {
+      return "a Victorian 3-facet style uPVC conservatory: an ornate glazed room with a faceted bay front made of three angled glazed facets, a steeply pitched glazed roof with a decorative ridge crest, period-elegant proportions, low dwarf walls with tall glazed panels above";
+    }
+    if (c.includes("edwardian") || c.includes("georgian")) {
+      return "an Edwardian (Georgian) style uPVC conservatory: a square or rectangular glazed room with a flat front (no faceted bay), a pitched hipped glazed roof rising to a central ridge, maximising the internal floor space, low dwarf walls with tall glazed panels above";
+    }
+    return "a uPVC conservatory glazed garden-room extension with low dwarf walls, large glazed panels and a glazed roof";
+  }
 
   // ---- VERTICAL SLIDING SASH (Gower sash, and any "x-over-y") ----
   // Only treat as a sliding sash if the product is actually a sash window, OR

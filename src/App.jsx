@@ -119,6 +119,7 @@ export default function App() {
   const [carouselFrames, setCarouselFrames] = useState(5);
 
   const [referenceImage, setReferenceImage] = useState("");
+  const [referenceUpload, setReferenceUpload] = useState(null); // { name, dataUrl }
 
   // ---------- Output state ----------
   const [output, setOutput] = useState(null);
@@ -314,7 +315,9 @@ export default function App() {
       aspectRatio,
       targetModel,
       duration,
-      referenceImage
+      referenceImage,
+      hasReferenceUpload: !!referenceUpload,
+      referenceUploadName: referenceUpload?.name || ""
     };
 
     let result;
@@ -380,6 +383,7 @@ export default function App() {
         duration={duration} setDuration={setDuration}
         carouselFrames={carouselFrames} setCarouselFrames={setCarouselFrames}
         referenceImage={referenceImage} setReferenceImage={setReferenceImage}
+        referenceUpload={referenceUpload} setReferenceUpload={setReferenceUpload}
         warnings={warnings}
         onGenerate={handleGenerate}
       />
@@ -414,6 +418,7 @@ function FormPanel(props) {
     targetModel, setTargetModel, availableModels,
     duration, setDuration, carouselFrames, setCarouselFrames,
     referenceImage, setReferenceImage,
+    referenceUpload, setReferenceUpload,
     warnings, onGenerate
   } = props;
 
@@ -720,8 +725,13 @@ function FormPanel(props) {
           </Field>
         )}
 
-        <Field label="Reference image URL (optional)" hint="For consistency across a series, character match, or matching a real property.">
-          <input className="wd-input" value={referenceImage} onChange={(e) => setReferenceImage(e.target.value)} placeholder="https://..." />
+        <Field label="Reference image (optional)" hint="For consistency across a series, character match, or matching a real property. Upload a file or paste a URL.">
+          <ReferenceImageInput
+            referenceImage={referenceImage}
+            setReferenceImage={setReferenceImage}
+            referenceUpload={referenceUpload}
+            setReferenceUpload={setReferenceUpload}
+          />
         </Field>
       </Section>
 
@@ -788,6 +798,72 @@ function Field({ label, hint, children }) {
 function OptionNote({ text }) {
   if (!text) return null;
   return <div className="wd-option-note" style={{ fontSize: 12, color: "#6a7886", marginTop: 5, lineHeight: 1.4 }}>{text}</div>;
+}
+
+function ReferenceImageInput({ referenceImage, setReferenceImage, referenceUpload, setReferenceUpload }) {
+  const fileInputRef = React.useRef(null);
+
+  function handleFile(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      alert("Please choose an image file (JPG, PNG, WebP, etc.).");
+      return;
+    }
+    if (file.size > 8 * 1024 * 1024) {
+      alert("That image is over 8MB. Please use a smaller file.");
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => setReferenceUpload({ name: file.name, dataUrl: reader.result });
+    reader.readAsDataURL(file);
+  }
+
+  function removeUpload() {
+    setReferenceUpload(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  return (
+    <div className="wd-refimg">
+      {/* Upload control */}
+      {!referenceUpload && (
+        <button
+          type="button"
+          className="wd-btn-secondary"
+          style={{ width: "100%", padding: "10px 14px", border: "1px dashed #b9c2cc", borderRadius: 8, background: "#f7f9fb", color: "#465f73", cursor: "pointer", fontSize: 14 }}
+          onClick={() => fileInputRef.current && fileInputRef.current.click()}
+        >
+          ⬆ Upload a reference image from your device
+        </button>
+      )}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: "none" }}
+        onChange={handleFile}
+      />
+
+      {/* Preview + remove */}
+      {referenceUpload && (
+        <div style={{ display: "flex", alignItems: "center", gap: 12, padding: 8, border: "1px solid #e2e8ee", borderRadius: 8, background: "#fff" }}>
+          <img src={referenceUpload.dataUrl} alt="reference preview" style={{ width: 64, height: 64, objectFit: "cover", borderRadius: 6, flexShrink: 0 }} />
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: "#26323d", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{referenceUpload.name}</div>
+            <div style={{ fontSize: 12, color: "#6a7886" }}>Attached — drag this file into your image tool when generating.</div>
+          </div>
+          <button type="button" onClick={removeUpload} style={{ border: "none", background: "transparent", color: "#b23", cursor: "pointer", fontSize: 13 }}>Remove</button>
+        </div>
+      )}
+
+      {/* URL field — still useful, and required for Midjourney --cref */}
+      <div style={{ marginTop: 8 }}>
+        <input className="wd-input" value={referenceImage} onChange={(e) => setReferenceImage(e.target.value)} placeholder="…or paste an image URL (https://…)" />
+        <OptionNote text="Tip: an uploaded file stays on your device and is for the drag-into-your-tool workflow (Nano Banana, Flux, Midjourney). Midjourney's --cref needs a public URL, so paste one here if you want it added to the parameters automatically." />
+      </div>
+    </div>
+  );
 }
 
 function Segments({ value, onChange, options }) {

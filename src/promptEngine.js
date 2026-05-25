@@ -230,7 +230,8 @@ function shortProductLabel(brief) {
     gowerCasement: "timber casement windows",
     gowerSash: "timber vertical sliding sash windows",
     gowerDoor: "timber entrance doors",
-    korniche: "aluminium roof lanterns"
+    korniche: "aluminium roof lanterns",
+    upvcConservatory: "uPVC conservatory"
   };
   const baseLabel = LABELS[brief.productId] || "windows and doors";
 
@@ -247,6 +248,12 @@ function shortProductLabel(brief) {
 // Ensures every opening on the visible elevation matches the chosen product.
 // =============================================================================
 function buildConsistencyClause(brief) {
+  const product = PRODUCTS[brief.productId];
+  // Conservatories are a single glazed structure, not a wall of matching
+  // openings — the "every window and door matches" clause doesn't apply.
+  if (product?.type === "conservatory") {
+    return "the whole conservatory is a single coordinated uPVC structure with consistent white frames, matching glazing and a unified glazed roof throughout";
+  }
   const label = shortProductLabel(brief);
   return `every window and door visible on this elevation is the same ${label}, consistent frame style, profile, glazing-bar treatment and colour throughout the whole building, all openings matching as a coordinated whole-house installation`;
 }
@@ -265,7 +272,14 @@ function buildLocationContext(brief) {
       if (housing) parts.push(housing.description);
     }
     if (brief.exteriorAspect) {
-      const aspectMap = {
+      const product = PRODUCTS[brief.productId];
+      const isConservatory = product?.type === "conservatory";
+      const aspectMap = isConservatory ? {
+        "front_full": "full view of the whole conservatory from the garden, showing its complete shape and glazed roof against the house",
+        "front_partial": "view of the conservatory from the garden, framing focused on the glazed structure",
+        "rear_full": "full view of the whole conservatory from the garden, showing its complete shape and glazed roof against the rear of the house",
+        "rear_partial": "view of the conservatory from the garden, framing focused on the glazed structure"
+      } : {
         "front_full": "full view of the front elevation showing the whole house",
         "front_partial": "partial view of the front of the house, framing focused on the product",
         "rear_full": "full view of the rear elevation showing the whole rear of the house",
@@ -565,6 +579,22 @@ function formatForModel(body, negative, aspect, brief, modelMeta) {
   let negativePrompt = negative;
   let parameters = "";
 
+  // A reference image can come from a pasted URL and/or an uploaded file.
+  // The tool outputs text prompts, so for an upload we instruct the user to
+  // attach the file in their image tool; a URL can also feed Midjourney --cref.
+  const refNote = (() => {
+    if (brief.hasReferenceUpload && brief.referenceImage) {
+      return `\n\nReference image: attach your uploaded file (${brief.referenceUploadName}) in your image tool, and/or use ${brief.referenceImage}. Match the property, framing and composition to the reference.`;
+    }
+    if (brief.hasReferenceUpload) {
+      return `\n\nReference image: attach your uploaded file (${brief.referenceUploadName}) in your image tool and match the property, framing and composition to it.`;
+    }
+    if (brief.referenceImage) {
+      return `\n\nReference image: ${brief.referenceImage} — match the property, framing and composition to the reference.`;
+    }
+    return "";
+  })();
+
   if (brief.targetModel === "midjourney") {
     // Midjourney: dense, with --no for negatives, --ar, --style raw, --v 6.1
     parameters = `--ar ${aspect} --style raw --v 6.1`;
@@ -572,10 +602,14 @@ function formatForModel(body, negative, aspect, brief, modelMeta) {
       parameters += ` --cref ${brief.referenceImage} --cw 100`;
     }
     mainPrompt = `${body} ${parameters} --no ${negative}`;
+    // If only an upload (no URL), MJ can't use --cref, so add a note.
+    if (brief.hasReferenceUpload && !brief.referenceImage) {
+      mainPrompt += `\n\n(Reference upload "${brief.referenceUploadName}": drag it into the Midjourney prompt as an image reference. Note: --cref needs a public URL, so paste one in the URL field if you want it added automatically.)`;
+    }
     negativePrompt = `(included inline as --no flag): ${negative}`;
   } else if (brief.targetModel === "flux") {
     parameters = `Aspect ratio: ${aspect} | Output: photorealistic`;
-    mainPrompt = body + (brief.referenceImage ? `\n\nReference image: ${brief.referenceImage}` : "");
+    mainPrompt = body + refNote;
     negativePrompt = `Avoid: ${negative}`;
   } else if (brief.targetModel === "nanobanana") {
     // Nano Banana (Gemini Image): Google's official guidance is to use POSITIVE
@@ -586,7 +620,7 @@ function formatForModel(body, negative, aspect, brief, modelMeta) {
     const positivePref = buildPositivePreferences(brief);
     mainPrompt = body
       + (positivePref ? ` ${positivePref}` : "")
-      + (brief.referenceImage ? `\n\nUse the supplied reference image as a guide for the property and composition.` : "");
+      + refNote;
     parameters = `Aspect ratio: ${aspect}`;
     // Keep a short, gentle preferences note instead of an aggressive "avoid" list.
     negativePrompt = "Nano Banana works best with positive description (handled in the main prompt above) rather than a negative list. Key preferences are baked into the main prompt.";

@@ -1058,8 +1058,8 @@ export const INSTALLER_DESCRIPTION = "professional installer in navy work polo s
 export const LIVED_IN_DETAILS = {
   // Front of house exterior
   exterior_front: {
-    subtle: ["a doormat at the entrance, slightly weathered", "a brass or slate house number with subtle aging", "small potted plant beside the door"],
-    moderate: ["a doormat slightly askew", "a wheelie bin tucked beside the porch but not dominating", "a brass house number with subtle weathering", "small potted plant or hanging basket", "ivy creeping along part of the boundary fence"],
+    subtle: ["a doormat at the entrance, slightly weathered", "a small potted plant beside the door"],
+    moderate: ["a doormat slightly askew", "a wheelie bin tucked beside the porch but not dominating", "a small potted plant or hanging basket", "ivy creeping along part of the boundary fence"],
     heavy: ["a doormat clearly used", "two wheelie bins (general and recycling) partially visible", "a hose reel mounted on the wall", "a hanging basket with seasonal planting", "ivy on a fence or boundary wall", "a child's scooter leaning against the wall", "moss in a path crack", "a satellite dish on the side wall"]
   },
   // Rear of house exterior / garden
@@ -1371,6 +1371,271 @@ export const INTERIOR_STYLES = {
   hallway: ["Tiled period (Victorian / Edwardian)", "Contemporary minimal", "Cottage warm with timber"],
   conservatory: ["Rattan modern", "Classic wicker traditional", "Contemporary garden room"]
 };
+
+// =============================================================================
+// ROOM SCENERY — swappable wall / floor / furniture sets per room so that
+// repeated generations don't keep producing the identical interior. The engine
+// picks one option from each list using a per-generation seed.
+// Each entry deliberately varies colour, material and specific furniture so the
+// model has concrete, different things to render every time.
+// =============================================================================
+export const ROOM_SCENERY = {
+  living_room: {
+    walls: [
+      "walls painted in a warm off-white",
+      "walls in a soft sage green",
+      "walls in a pale dove grey",
+      "walls in a muted clay/terracotta tone",
+      "walls in a deep navy feature wall with paler returns",
+      "walls in warm greige with white coving",
+      "one exposed brick chimney breast with painted walls elsewhere"
+    ],
+    floor: [
+      "natural oak engineered wood flooring",
+      "wide pale-grey plank flooring with a textured wool rug",
+      "warm honey-toned wood floor with a patterned vintage rug",
+      "polished concrete-look floor with a soft jute rug",
+      "dark stained timber boards with a cream rug"
+    ],
+    furniture: [
+      "a linen-upholstered three-seater sofa, a low oak coffee table and a slim floor lamp",
+      "a mid-century style sofa with tapered wooden legs, a round walnut side table and a leafy potted plant",
+      "a deep velvet sofa in muted teal, a marble-topped coffee table and a tall floor plant",
+      "a pale boucle two-seater, a rattan armchair and a stack of art books on a wooden bench",
+      "a grey fabric corner sofa, a glass coffee table and a large framed print on the wall",
+      "a Chesterfield-style leather sofa, a worn kilim rug and a brass standing lamp"
+    ],
+    ornaments: [
+      "a couple of ceramic vases and a trailing plant on a shelf",
+      "framed prints in a loose gallery arrangement",
+      "a stack of coffee-table books and a scented candle",
+      "a woven basket of throws beside the sofa",
+      "a small cluster of pottery on the windowsill"
+    ]
+  },
+  kitchen: {
+    walls: [
+      "walls in a crisp white with a tiled splashback",
+      "walls in a soft sage with metro-tile splashback",
+      "walls in pale grey with a marble-effect splashback",
+      "walls in warm cream with a brick-slip splashback",
+      "walls in a muted blue-grey"
+    ],
+    floor: [
+      "large-format pale porcelain floor tiles",
+      "natural oak engineered flooring",
+      "patterned encaustic-style floor tiles",
+      "warm terracotta-look tiles",
+      "light grey wood-effect flooring"
+    ],
+    furniture: [
+      "shaker cabinetry in sage green with a wooden worktop and a Belfast sink",
+      "handleless matt-white units with a quartz worktop and an island",
+      "navy-blue cabinets with brass handles and a butcher-block top",
+      "warm oak cabinetry with a stone worktop",
+      "dark graphite units with a pale composite worktop and open shelving"
+    ],
+    ornaments: [
+      "a wooden bowl of fruit and a couple of mugs by the kettle",
+      "a small herb pot on the windowsill and a folded tea towel",
+      "an open cookbook on a stand and a vase of fresh flowers",
+      "a row of storage jars and a bread board",
+      "a hanging utensil rail and a potted plant"
+    ]
+  },
+  bathroom: {
+    walls: [
+      "walls in soft white with large marble-effect tiles",
+      "walls in a calming sage with half-height metro tiles",
+      "walls in pale grey with a stone-effect feature wall",
+      "walls in warm taupe with white sanitaryware",
+      "walls in a bold deep-green tile feature wall"
+    ],
+    floor: [
+      "pale stone-effect porcelain floor tiles",
+      "patterned monochrome floor tiles",
+      "warm wood-effect waterproof flooring",
+      "soft grey large-format tiles"
+    ],
+    furniture: [
+      "a freestanding roll-top bath and a wall-hung vanity",
+      "a walk-in shower with a slim vanity and round mirror",
+      "a classic white suite with a chrome heated towel rail",
+      "a stone basin on a timber vanity with a frameless mirror"
+    ],
+    ornaments: [
+      "a folded towel and a small potted fern on the sill",
+      "a candle and a glass bottle of bath oil on the bath surround",
+      "a eucalyptus stem in a vase and neatly rolled towels",
+      "a simple soap dish and a trailing plant"
+    ]
+  },
+  dining_room: {
+    walls: [
+      "walls in warm white with picture rails",
+      "walls in a deep forest-green feature wall",
+      "walls in pale grey with panelled detailing",
+      "walls in muted ochre"
+    ],
+    floor: [
+      "natural oak flooring with a large rug under the table",
+      "dark stained boards",
+      "patterned tiles in an open-plan setting",
+      "warm parquet flooring"
+    ],
+    furniture: [
+      "a solid oak dining table with mismatched chairs and a pendant light above",
+      "a contemporary table with moulded chairs and a linear pendant",
+      "a round pedestal table with upholstered chairs",
+      "a farmhouse table with a bench on one side"
+    ],
+    ornaments: [
+      "a linen runner, a vase of seasonal stems and a couple of candles",
+      "a bowl of fruit and a stack of plates ready to lay",
+      "a pair of taper candles in brass holders",
+      "a ceramic jug of foliage as a centrepiece"
+    ]
+  },
+  bedroom: {
+    walls: [
+      "walls in calm pale grey",
+      "walls in a soft blush",
+      "walls in muted blue-green",
+      "walls in warm white with a panelled headboard wall",
+      "walls in deep navy behind the bed with paler returns"
+    ],
+    floor: [
+      "natural oak flooring with a soft rug",
+      "pale carpet",
+      "wide plank wood floor with a sheepskin rug",
+      "warm wood floor with a patterned runner"
+    ],
+    furniture: [
+      "a low upholstered bed with linen bedding, two timber bedside tables and matching lamps",
+      "a wooden bed frame with layered neutral bedding and a woven bench at the foot",
+      "a rattan headboard, crisp white bedding and a trailing plant",
+      "a classic divan with a throw, bedside drawers and soft lamps"
+    ],
+    ornaments: [
+      "a book and a small lamp on the bedside table",
+      "a vase of stems and a folded throw at the foot of the bed",
+      "framed prints above the headboard",
+      "a tray with a carafe and glass on the bedside"
+    ]
+  },
+  hallway: {
+    walls: [
+      "walls in warm white with panelled lower wall",
+      "walls in a heritage green with white woodwork",
+      "walls in pale grey",
+      "walls in a soft clay tone"
+    ],
+    floor: [
+      "original Victorian-style encaustic floor tiles",
+      "natural oak flooring with a runner",
+      "pale stone-effect tiles",
+      "patterned monochrome tiles"
+    ],
+    furniture: [
+      "a slim console table with a mirror above and a bench for shoes",
+      "a row of wall hooks with coats and a small bench",
+      "a narrow console with a lamp and a stair runner",
+      "a wooden bench with baskets beneath"
+    ],
+    ornaments: [
+      "a vase of flowers on the console and a stack of post",
+      "a pair of framed prints and a small plant",
+      "a bowl for keys and a hanging mirror",
+      "a runner rug and a coat on a hook"
+    ]
+  },
+  conservatory: {
+    walls: [
+      "low brick dwarf walls with glazing above",
+      "painted plaster end-wall with glazing elsewhere",
+      "full-height glazing with a solid pitched-roof return"
+    ],
+    floor: [
+      "warm terracotta-look tiles",
+      "pale porcelain tiles with a rug",
+      "natural wood-effect flooring",
+      "patterned tiles with a seating rug"
+    ],
+    furniture: [
+      "a rattan sofa set with soft cushions and a low table",
+      "a pair of woven armchairs and a small bistro table",
+      "a comfortable corner sofa with a coffee table and trailing plants",
+      "a dining set positioned to look out over the garden"
+    ],
+    ornaments: [
+      "an abundance of leafy potted plants",
+      "a watering can and a tray of herbs",
+      "a stack of garden books and a candle",
+      "cushions and a folded throw on the seating"
+    ]
+  }
+};
+
+// =============================================================================
+// EXTERIOR SCENERY — swappable surroundings so exteriors aren't always the same
+// (not every shot should have the same trees). Each list gives the engine
+// concrete, varied options to pick from per generation using the seed.
+// =============================================================================
+export const EXTERIOR_SCENERY = {
+  // Foreground / approach to the property
+  approach: [
+    "a short tiled path leading to the entrance",
+    "a block-paved driveway with a parked car partly in frame",
+    "a gravel approach with a low border of planting",
+    "a neat front lawn bordered by a clipped hedge",
+    "a paved frontage with potted plants either side of the door",
+    "a low brick garden wall with a wrought-iron gate",
+    "a simple paved forecourt with a doormat and bootscraper"
+  ],
+  // Planting / greenery (deliberately varied — some with trees, some without)
+  planting: [
+    "established shrubs and a flowering border along the front",
+    "a pair of clipped bay trees in pots flanking the door",
+    "a climbing rose or wisteria trained beside the window",
+    "low lavender and grasses softening the base of the wall",
+    "a tidy lawn with no trees, open and uncluttered",
+    "seasonal bedding plants in a narrow border",
+    "a mature front garden with planting but open sky above"
+  ],
+  // Wider surroundings / backdrop
+  surroundings: [
+    "neighbouring houses softly out of focus along the street",
+    "an open sky with no trees behind the roofline",
+    "a quiet street with parked cars blurred in the distance",
+    "a glimpse of countryside beyond the rooftops",
+    "mature street trees set well back, not dominating the frame",
+    "an adjacent terrace continuing along the pavement",
+    "a clear uncluttered backdrop keeping focus on the house"
+  ],
+  // Sky / atmosphere
+  sky: [
+    "a soft bright overcast sky",
+    "a gentle blue sky with light high cloud",
+    "a crisp clear sky with soft sunshine",
+    "a calm pale-grey sky giving even diffuse light",
+    "warm late-afternoon light with long soft shadows"
+  ],
+  // Explicit house numbers so the model doesn't invent one (it tends to copy a
+  // stray number like a lens '24mm' onto the door). A varied spread.
+  houseNumber: [
+    "the house number 7", "the house number 12", "the house number 18",
+    "the house number 3", "the house number 29", "the house number 41",
+    "the house number 56", "the house number 9", "the house number 33",
+    "the house number 21", "the house number 64", "the house number 15"
+  ],
+  // Front door colours for context houses (only used when the product itself
+  // isn't the door, to vary the look of the entrance in the scene)
+  doorColour: [
+    "a navy front door", "a sage-green front door", "a deep-red front door",
+    "a black front door", "a soft-grey front door", "a racing-green front door"
+  ]
+};
+
 
 export const ROOMS = ["Living room", "Kitchen", "Bathroom", "Dining room", "Bedroom", "Hallway", "Conservatory interior", "Orangery", "Stairwell / landing"];
 

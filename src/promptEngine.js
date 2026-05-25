@@ -24,6 +24,8 @@ import {
   COMPDOOR_STYLES,
   COMPDOOR_GLASS,
   INTERIOR_STYLES,
+  ROOM_SCENERY,
+  EXTERIOR_SCENERY,
   SHOT_ANGLES
 } from "./catalogue.js";
 
@@ -39,6 +41,56 @@ function pickLivedIn(scene, level, rotationSeed = 0) {
   // Pick subtle: 1-2, moderate: 3-4, heavy: 5-6
   const count = level === "subtle" ? 2 : level === "moderate" ? 3 : 5;
   return rotated.slice(0, Math.min(count, rotated.length));
+}
+
+// Pick one item from a list using a seed. The salt makes different attributes
+// (walls vs floor vs furniture) pick independently for the same seed, so they
+// don't all advance together and produce correlated, repetitive combinations.
+function seededPick(list, seed = 0, salt = 0) {
+  if (!Array.isArray(list) || list.length === 0) return "";
+  const idx = Math.abs((seed * 31 + salt * 101 + 7)) % list.length;
+  return list[idx];
+}
+
+// Map a display room name to a scenery/lived-in key.
+function roomKeyFor(room) {
+  const roomMap = {
+    "Kitchen": "kitchen",
+    "Living room": "living_room",
+    "Bathroom": "bathroom",
+    "Dining room": "dining_room",
+    "Bedroom": "bedroom",
+    "Hallway": "hallway",
+    "Conservatory interior": "conservatory",
+    "Orangery": "conservatory",
+    "Stairwell / landing": "hallway"
+  };
+  return roomMap[room] || "living_room";
+}
+
+// Assemble a varied scenery description for a room using the seed.
+function buildRoomScenery(roomKey, seed = 0) {
+  const s = ROOM_SCENERY[roomKey];
+  if (!s) return "";
+  const bits = [
+    seededPick(s.walls, seed, 1),
+    seededPick(s.floor, seed, 2),
+    seededPick(s.furniture, seed, 3),
+    seededPick(s.ornaments, seed, 4)
+  ].filter(Boolean);
+  return bits.join(", ");
+}
+
+// Assemble varied exterior surroundings using the seed.
+function buildExteriorScenery(seed = 0) {
+  const s = EXTERIOR_SCENERY;
+  const bits = [
+    seededPick(s.approach, seed, 1),
+    seededPick(s.planting, seed, 2),
+    seededPick(s.surroundings, seed, 3),
+    seededPick(s.sky, seed, 4)
+  ].filter(Boolean);
+  return bits.join(", ");
 }
 
 // =============================================================================
@@ -224,7 +276,6 @@ function buildLocationContext(brief) {
       const isFullView = brief.exteriorAspect === "front_full" || brief.exteriorAspect === "rear_full";
       if (isFullView) {
         // Option 2 — optional elevation layout described by the user.
-        // Applies the chosen product to all the openings the user lists.
         if (brief.elevationLayout && brief.elevationLayout.trim()) {
           parts.push(`elevation make-up: ${brief.elevationLayout.trim()}, all of these openings fitted with the same product`);
         }
@@ -232,8 +283,18 @@ function buildLocationContext(brief) {
         parts.push(buildConsistencyClause(brief));
       }
     }
+    // Varied surroundings so exteriors don't all look the same (and not always trees)
+    const seed = brief.rotationSeed || 0;
+    parts.push(buildExteriorScenery(seed));
+    // Explicit house number only on front views (so it isn't invented from a stray number)
+    const isFront = brief.exteriorAspect === "front_full" || brief.exteriorAspect === "front_partial";
+    if (isFront) {
+      parts.push(seededPick(EXTERIOR_SCENERY.houseNumber, seed, 5));
+    }
   } else if (brief.shootLocation === "interior") {
     const product = PRODUCTS[brief.productId];
+    const seed = brief.rotationSeed || 0;
+    const roomKey = roomKeyFor(brief.room);
     // Roof lanterns are shown from inside looking up into the lantern.
     if (product?.type === "roof_lantern") {
       parts.push(`interior view looking upward at the roof lantern set into the ceiling of a ${(brief.room || "kitchen extension").toLowerCase()}`);
@@ -241,6 +302,8 @@ function buildLocationContext(brief) {
       if (brief.interiorStyle) {
         parts.push(`room styled as ${brief.interiorStyle.toLowerCase()}`);
       }
+      const scenery = buildRoomScenery(roomKey, seed);
+      if (scenery) parts.push(scenery);
     } else {
       // Internal room
       if (brief.room) {
@@ -249,6 +312,9 @@ function buildLocationContext(brief) {
       if (brief.interiorStyle) {
         parts.push(`styled as ${brief.interiorStyle.toLowerCase()}`);
       }
+      // Varied walls / floor / furniture / ornaments so repeated interiors differ
+      const scenery = buildRoomScenery(roomKey, seed);
+      if (scenery) parts.push(scenery);
     }
     if (brief.county && brief.housingId) {
       const housingList = HOUSING_STOCK[brief.county] || [];
@@ -259,10 +325,13 @@ function buildLocationContext(brief) {
       parts.push(`through the glazing visible: ${brief.exteriorVisible}`);
     }
   } else if (brief.shootLocation === "internal_partition") {
+    const seed = brief.rotationSeed || 0;
     parts.push(`interior view showing the partition between two rooms${brief.partitionRooms ? ` (${brief.partitionRooms})` : ""}`);
     if (brief.interiorStyle) {
       parts.push(`interior styled as ${brief.interiorStyle.toLowerCase()}`);
     }
+    const scenery = buildRoomScenery("living_room", seed);
+    if (scenery) parts.push(scenery);
   }
 
   return parts.filter(Boolean).join(", ");
@@ -615,9 +684,13 @@ export function buildVariations(brief) {
   const variations = [];
   const baseAngles = ["three_quarter", "eye_level", "low_hero"];
   const baseLightings = brief.lightingId ? [brief.lightingId] : ["overcast_soft", "bright_overcast", "blue_hour"];
+  // Base seed comes from the brief (randomised per generation in the UI). Each
+  // variation offsets from it, so all three differ from each other AND the whole
+  // set changes every time the user regenerates.
+  const baseSeed = brief.rotationSeed || 0;
 
   for (let i = 0; i < 3; i++) {
-    const variantBrief = { ...brief, rotationSeed: i };
+    const variantBrief = { ...brief, rotationSeed: baseSeed + i };
     // Vary angle on variations 2 and 3
     if (i > 0) {
       const angleId = baseAngles[i % baseAngles.length];

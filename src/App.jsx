@@ -265,6 +265,10 @@ export default function App() {
     })();
 
     const brief = {
+      // Fresh random seed each time Generate is clicked, so interiors and
+      // exteriors vary (walls, floor, furniture, surroundings, house number)
+      // on every generation rather than always producing the same scene.
+      rotationSeed: Math.floor(Math.random() * 100000),
       productId,
       configuration,
       colourName,

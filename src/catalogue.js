@@ -111,8 +111,8 @@ export const PRODUCTS = {
     material: "uPVC",
     type: "window",
     installContext: "exterior",
-    visualDescriptor: "a uPVC window with a sculptured outward-opening sash standing slightly proud of the frame, traditional ovolo profile, subtle weld bead at the corner mitres characteristic of welded uPVC, 70mm outer frame",
-    signatureVisualCue: "outward-opening sculptured sash proud of frame face, period-appropriate proportions, visible welded mitre joints",
+    visualDescriptor: "a uPVC window with a sculptured outward-opening casement leaf standing slightly proud of the frame, traditional ovolo profile, subtle weld bead at the corner mitres characteristic of welded uPVC, 70mm outer frame",
+    signatureVisualCue: "outward-opening sculptured casement leaf proud of the frame face, period-appropriate proportions, visible welded mitre joints, a side-opening casement not a sliding sash",
     configurations: [
       "Single fixed light",
       "Single side-hung casement",
@@ -136,7 +136,7 @@ export const PRODUCTS = {
     type: "window",
     installContext: "exterior",
     visualDescriptor: "a uPVC flush casement window where the opening part sits flush within the frame face replicating traditional timber joinery, slim sightlines, designed to look authentically like painted timber",
-    signatureVisualCue: "fully flush exterior face with no proud sash, slim sightlines, mechanical-jointed corners possible (no weld bead) for period authenticity",
+    signatureVisualCue: "fully flush exterior face with the opening casement leaf level with the frame, slim sightlines, mechanical-jointed corners possible (no weld bead) for period authenticity, a side-opening casement not a sliding sash",
     configurations: [
       "Single fixed light",
       "Single side-hung casement",
@@ -175,8 +175,8 @@ export const PRODUCTS = {
     material: "uPVC",
     type: "french_door",
     installContext: "exterior",
-    visualDescriptor: "a uPVC French door pair with a flush sash design matching the Heritage Flush windows, slim sightlines, period-authentic timber-look proportions",
-    signatureVisualCue: "matched pair with flush exterior face, dedicated open-out flush French sash",
+    visualDescriptor: "a uPVC French door pair with a flush casement-leaf design matching the Heritage Flush windows, slim sightlines, period-authentic timber-look proportions",
+    signatureVisualCue: "matched pair with flush exterior face, dedicated open-out flush French casement leaves",
     configurations: [
       "Pair, equal width",
       "Pair with single sidelight",
@@ -260,8 +260,8 @@ export const PRODUCTS = {
     material: "Aluminium",
     type: "window",
     installContext: "exterior",
-    visualDescriptor: "a slim aluminium window in the steel-look heritage style, designed to replicate a traditional vintage steel window, ultra-narrow sightlines, a fine 'step' sash profile, often with slim astragal glazing bars dividing the glass, powder-coated finish",
-    signatureVisualCue: "very fine ultra-slim steel-look aluminium frames and glazing bars, vintage industrial 'Crittall' steel-window character, much finer and more delicate than standard casement frames, period-authentic proportions, typically in matt black",
+    visualDescriptor: "a slim aluminium window in the steel-look heritage style, designed to replicate a traditional vintage steel window, ultra-narrow sightlines, very fine slender frame profile, powder-coated finish",
+    signatureVisualCue: "very fine ultra-slim steel-look aluminium frame, vintage industrial 'Crittall' steel-window character, much finer and more delicate than a standard casement frame, period-authentic proportions, typically in matt black",
     configurations: [
       "Single fixed light",
       "Single side-hung casement",
@@ -283,8 +283,8 @@ export const PRODUCTS = {
     material: "Aluminium",
     type: "door",
     installContext: "exterior",
-    visualDescriptor: "a slim aluminium door in the steel-look heritage style replicating a traditional vintage steel door, ultra-narrow sightlines matching the Heritage windows, large glazed area often divided by slim astragal glazing bars, powder-coated finish, low threshold",
-    signatureVisualCue: "very fine ultra-slim steel-look aluminium frames and glazing bars matching the Heritage window range, vintage industrial 'Crittall' steel-door character, slim and elegant, typically in matt black",
+    visualDescriptor: "a slim aluminium door in the steel-look heritage style replicating a traditional vintage steel door, ultra-narrow sightlines matching the Heritage windows, large glazed area, powder-coated finish, low threshold",
+    signatureVisualCue: "very fine ultra-slim steel-look aluminium frame matching the Heritage window range, vintage industrial 'Crittall' steel-door character, slim and elegant, typically in matt black",
     configurations: [
       "Single residential door",
       "Single door with steel-look glazing bars",
@@ -551,7 +551,7 @@ export function translateConfiguration(cfg, product) {
     return `a steel-look heritage window divided into ${grid} of equal rectangular panes by very slim astragal glazing bars, replicating a vintage steel Crittall window, ultra-fine sightlines, flat in plane. A fixed or casement steel-look grid window, NOT a vertical sliding sash`;
   }
   if (c.includes("flush casement")) {
-    return "a flush casement window where the opening sash sits perfectly flush within the frame (level with the frame face, not standing proud), opening outward on a side hinge, one rectangular pane per sash. A side-opening flush CASEMENT, NOT a vertical sliding sash";
+    return "a flush casement window where the opening leaf sits perfectly flush within the frame (level with the frame face, not standing proud), opening outward on a side hinge, one rectangular pane. A side-opening flush CASEMENT, NOT a vertical sliding sash";
   }
   // Multi-light combinations must be checked BEFORE single side-hung/top-hung,
   // because their strings also contain "side-hung".
@@ -1256,7 +1256,7 @@ export const PEOPLE_NEGATIVES = "uncanny valley face, six fingers, distorted han
 // =============================================================================
 export const ALUMINIUM_REALISM = {
   // General surface character of architectural aluminium, true to real installs.
-  base: "real architectural aluminium with the characteristic flat, even, non-reflective surface of polyester powder-coating, fine micro-texture catching soft diffuse light rather than mirror reflections, crisp precisely-machined square-edged profiles with clean mitred corners and no visible welds, slim frame sightlines, subtle hairline shadow gaps between frame and sash, factory-finished consistency, the unmistakable look of quality powder-coated metal not plastic and not chrome",
+  base: "real architectural aluminium with the characteristic flat, even, non-reflective surface of polyester powder-coating, fine micro-texture catching soft diffuse light rather than mirror reflections, crisp precisely-machined square-edged profiles with clean mitred corners and no visible welds, slim frame sightlines, subtle hairline shadow gaps between the opening part and the outer frame, factory-finished consistency, the unmistakable look of quality powder-coated metal not plastic and not chrome",
   // Finish-specific surface behaviour, keyed to the colour's `finish` string.
   finishes: {
     "matt powder": "dead-matt powder-coat finish that absorbs light with a soft velvety sheen, no gloss, no reflections, even uniform colour across the whole profile",

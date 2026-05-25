@@ -70,8 +70,38 @@ function buildProductDescription(brief) {
   }
 
   // Glazing bars
+  const isDoorType = product?.type === "door" || product?.type === "french_door";
+  const glassWord = isDoorType ? "the glazed area of the door" : "the glass";
   if (brief.glazingBars && brief.glazingBars !== "None") {
-    parts.push(`glazing bar treatment: ${brief.glazingBars}`);
+    const bars = brief.glazingBars.toLowerCase();
+    let barDesc;
+    if (bars.includes("margin")) {
+      barDesc = `glazing bars: ${brief.glazingBars} — slim bars forming a narrow border of small panes around a larger central pane`;
+    } else if (bars.includes("astragal") || bars.includes("steel-look") || bars.includes("georgian")) {
+      barDesc = `glazing bars: ${brief.glazingBars} — slim bars dividing ${glassWord} into a regular grid of equal rectangular panes`;
+    } else {
+      barDesc = `glazing bar treatment: ${brief.glazingBars}`;
+    }
+    // Steel-look / heritage bars must read as a fixed grid, NOT a sliding sash.
+    const isSash = product?.type === "sash_window";
+    if (!isSash) {
+      if (isDoorType) {
+        barDesc += ", these are fixed grid glazing bars dividing only the glazed panel of the door into small panes in a vintage steel-look Crittall style, the door does NOT slide and the bars are NOT a sash";
+      } else {
+        barDesc += ", these are fixed grid glazing bars dividing a single flat window into small panes — the window does NOT slide and is NOT a vertical sliding sash, the bars form a grid not a sash meeting rail";
+      }
+    }
+    parts.push(barDesc);
+  } else {
+    // Explicitly state NO bars on single-pane window configs. Some models
+    // (especially for 'heritage'/steel-look products) default to drawing dividing
+    // bars or a sash-style split unless told otherwise. Skip this for doors,
+    // where a plain glazed/solid door needs no such disclaimer.
+    const cfg = (brief.configuration || "").toLowerCase();
+    const isMultiPane = cfg.includes("grid") || cfg.includes("over") || cfg.includes("cottage") || cfg.includes("light:") || cfg.includes("three-light") || cfg.includes("two-light") || cfg.includes("bay");
+    if (!isMultiPane && !isDoorType) {
+      parts.push("a single clean undivided pane of glass with NO glazing bars, NO astragal bars and NO horizontal or vertical dividing bars across the glass");
+    }
   }
 
   // Comp Door style and glass

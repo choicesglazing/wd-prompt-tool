@@ -143,9 +143,13 @@ export default function App() {
     if (colourSet.length && !colourSet.find(c => c.name === colourName)) {
       setColourName(colourSet[0].name);
     }
-    // Reset glazing bars
+    // Reset glazing bars. Heritage steel-look products characteristically have
+    // bars, so default those to the steel-look astragal option; everything else
+    // defaults to the first option (usually None).
     if (product?.glazingBars?.length && !product.glazingBars.includes(glazingBars)) {
-      setGlazingBars(product.glazingBars[0]);
+      const isHeritage = productId === "smartHeritageWindow" || productId === "smartHeritageDoor";
+      const steelBar = product.glazingBars.find(g => /astragal|steel-look/i.test(g));
+      setGlazingBars(isHeritage && steelBar ? steelBar : product.glazingBars[0]);
     }
     // Reset hardware
     if (hardwareSchema && hardwareSchema.options) {

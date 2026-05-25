@@ -5,16 +5,12 @@ import {
   PRODUCTS,
   COLOUR_SETS,
   HARDWARE,
+  translateConfiguration,
   HOUSING_STOCK,
   SCENE_PRESETS,
   LIGHTING_OPTIONS,
   GROUND_CONDITIONS,
   SEASONS,
-  PEOPLE_REALISM_SCAFFOLD,
-  DEMOGRAPHIC_MODERNISER,
-  CHILDREN_FRAMING,
-  MOBILITY_AID_SCAFFOLD,
-  INSTALLER_DESCRIPTION,
   LIVED_IN_DETAILS,
   CAMERA_LANGUAGE,
   PLATFORMS,
@@ -60,19 +56,11 @@ function buildProductDescription(brief) {
   // Visual descriptor (NEVER brand name)
   parts.push(product.visualDescriptor);
 
-  // Configuration
+  // Configuration — translated into explicit, unambiguous visual language
+  // (handles casement vs sash, bays, bifolds, doors, etc. with guardrails).
   if (brief.configuration) {
-    parts.push(`configuration: ${brief.configuration}`);
-
-    // Bay windows need explicit geometry or the model renders them flat.
-    const cfg = brief.configuration.toLowerCase();
-    if (cfg.includes("bay")) {
-      let bayGeometry = "true bay window projecting outward from the facade, the individual lights set at angles to wrap around the bay, distinct returns at each side, period-appropriate bay proportions";
-      if (cfg.includes("splayed")) bayGeometry += ", gently splayed angled bay";
-      else if (cfg.includes("canted")) bayGeometry += ", canted bay with angled flat side returns";
-      else if (cfg.includes("square")) bayGeometry += ", square bay with perpendicular side returns";
-      parts.push(bayGeometry);
-    }
+    const translated = translateConfiguration(brief.configuration, product);
+    if (translated) parts.push(translated);
   }
 
   // Colour with RAL/hex
@@ -140,41 +128,34 @@ function shortProductLabel(brief) {
   const product = PRODUCTS[brief.productId];
   if (!product) return "windows and doors";
 
-  // A concise, human-readable product family name (strip the manufacturer
-  // and bracketed sub-name so the clause reads naturally in a prompt).
-  let name = product.name
-    .replace(/^Deceuninck\s+/i, "")
-    .replace(/^Smart\s+/i, "")
-    .replace(/^Hurst\s+/i, "")
-    .replace(/^Gower Joinery\s+/i, "")
-    .replace(/^Comp Door\s+/i, "")
-    .replace(/\s*\([^)]*\)\s*/g, " ")
-    .trim();
-
-  // Strip a trailing unit word (Window/Door/etc.) so it doesn't double up when
-  // we append the pluralised type word below (e.g. "Alitherm 400 windows").
-  name = name.replace(/\s+(Window|Door|Bifold Door|Patio Door|French Door|Roof Lantern)$/i, "").trim();
-
-  // Pluralise the unit type sensibly
-  const typeWord = {
-    window: "windows",
-    sash_window: "sash windows",
-    door: "doors",
-    french_door: "French doors",
-    patio_door: "patio doors",
-    bifold: "bifold doors",
-    internal_screen: "internal screens",
-    roof_lantern: "roof lanterns"
-  }[product.type] || "windows and doors";
-
-  const material = product.material ? `${product.material} ` : "";
+  // Explicit, human-readable labels for the whole-house consistency clause.
+  // Deterministic and easy to maintain — no fragile string surgery.
+  const LABELS = {
+    decHeritage2800: "Heritage 2800 uPVC casement windows",
+    decHeritageFlush: "Heritage Flush uPVC casement windows",
+    decSlider24: "Slider24 uPVC sliding patio doors",
+    decFlushDoor: "Heritage Flush uPVC French doors",
+    hurstDoor: "uPVC residential doors",
+    smartAlitherm400Window: "Alitherm 400 aluminium windows",
+    smartAlitherm400Door: "Alitherm 400 aluminium doors",
+    smartAluspace: "Aluspace aluminium internal screens",
+    smartDesignerDoor: "aluminium Designer entrance doors",
+    smartSignatureDoor: "aluminium Signature entrance doors",
+    smartVisofold1000: "Visofold 1000 aluminium bifold doors",
+    compdoor: "composite entrance doors",
+    gowerCasement: "timber casement windows",
+    gowerSash: "timber vertical sliding sash windows",
+    gowerDoor: "timber entrance doors",
+    korniche: "aluminium roof lanterns"
+  };
+  const baseLabel = LABELS[brief.productId] || "windows and doors";
 
   // Finish / colour
   const colourSet = COLOUR_SETS[product.colours] || [];
   const colour = colourSet.find(c => c.name === brief.colourName);
   const finishStr = colour ? ` in matching ${colour.name}` : "";
 
-  return `${name} ${material}${typeWord}${finishStr}`.replace(/\s+/g, " ").trim();
+  return `${baseLabel}${finishStr}`;
 }
 
 // =============================================================================
@@ -286,45 +267,12 @@ function buildCinematography(brief) {
 }
 
 // =============================================================================
-// Build people block (with all the anti-uncanny-valley scaffolding)
+// People block — REMOVED. Every image is an unoccupied property shot, which
+// renders far more realistically (no hands/faces failure modes). Kept as a
+// stub returning "" so the assembly code needs no changes.
 // =============================================================================
 function buildPeopleBlock(brief) {
-  if (!brief.people || brief.people.peopleType === "none") return "";
-
-  const parts = [];
-  const p = brief.people;
-
-  // Subject description
-  if (p.peopleType === "homeowner_solo") {
-    parts.push(`a single homeowner (${p.ethnicity || "white British"}, ${p.ageRange || "age 35-55"}) ${p.action || "engaged in a natural moment in the home"}`);
-  } else if (p.peopleType === "homeowner_couple") {
-    parts.push(`a homeowner couple (${p.ethnicity || "white British"}, mid-life ${p.ageRange || "age 40-55"}) ${p.action || "in a natural domestic moment together"}`);
-  } else if (p.peopleType === "homeowner_family") {
-    parts.push(`a family (${p.ethnicity || "white British"}, parents in their late 30s to mid 40s, ${p.children || "with one or two children"}) ${p.action || "in candid family-life moment"}`);
-  } else if (p.peopleType === "older_homeowner") {
-    parts.push(`an older homeowner (${p.ethnicity || "white British"}, ${p.ageRange || "age 65-75"}) ${p.action || "engaged in a calm everyday moment"}`);
-    if (p.mobilityAid) {
-      parts.push(MOBILITY_AID_SCAFFOLD);
-    }
-  } else if (p.peopleType === "installer") {
-    parts.push(INSTALLER_DESCRIPTION);
-  } else if (p.peopleType === "installer_with_homeowner") {
-    parts.push(INSTALLER_DESCRIPTION);
-    parts.push(`alongside a homeowner (${p.ethnicity || "white British"}, ${p.ageRange || "age 40-60"}) in conversation or observing the work`);
-  }
-
-  // Modernise / contemporary framing
-  parts.push(DEMOGRAPHIC_MODERNISER);
-
-  // Anti-uncanny-valley scaffolding
-  parts.push(PEOPLE_REALISM_SCAFFOLD);
-
-  // Children-specific framing if children present
-  if (p.peopleType === "homeowner_family" || p.children) {
-    parts.push(CHILDREN_FRAMING);
-  }
-
-  return parts.join(", ");
+  return "";
 }
 
 // =============================================================================
@@ -718,28 +666,28 @@ export function buildVideoShotList(brief) {
     });
   } else if (brief.scenePresetId === "trust") {
     shots.push({
-      label: "Shot 1 — Establishing (installer arriving / setup)",
+      label: "Shot 1 — Establishing wide of the completed install",
       duration: 3,
       cameraMotion: "static or slow pan",
-      result: buildPrompt({ ...brief, framingId: "wide_24", framingDescription: "24mm wide establishing", duration: 3 })
+      result: buildPrompt({ ...brief, framingId: "wide_24", framingDescription: "24mm wide establishing of the finished installation", duration: 3 })
     });
     shots.push({
-      label: "Shot 2 — Mid of installer working",
+      label: "Shot 2 — Mid view of the new product in context",
       duration: 4,
-      cameraMotion: "subtle handheld",
-      result: buildPrompt({ ...brief, framingId: "standard_35", framingDescription: "35mm natural perspective on the work", duration: 4 })
+      cameraMotion: "slow push-in",
+      result: buildPrompt({ ...brief, framingId: "standard_35", framingDescription: "35mm natural perspective on the newly fitted product", duration: 4 })
     });
     shots.push({
-      label: "Shot 3 — Macro of hands and detail",
+      label: "Shot 3 — Macro of the crisp finished detail",
       duration: 3,
       cameraMotion: "static, shallow focus",
-      result: buildPrompt({ ...brief, framingId: "macro", framingDescription: "macro detail of hands and tools on the product", duration: 3 })
+      result: buildPrompt({ ...brief, framingId: "macro", framingDescription: "macro detail of the clean sealant line, hardware and frame of the freshly fitted product", duration: 3 })
     });
     shots.push({
       label: "Shot 4 — Finished reveal",
       duration: 3,
       cameraMotion: "slow pull-back",
-      result: buildPrompt({ ...brief, framingId: "wide_24", framingDescription: "wide reveal of finished install", duration: 3 })
+      result: buildPrompt({ ...brief, framingId: "wide_24", framingDescription: "wide reveal of the finished installation", duration: 3 })
     });
   } else if (brief.scenePresetId === "atmospheric") {
     shots.push({

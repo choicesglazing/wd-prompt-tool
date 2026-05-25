@@ -111,7 +111,7 @@ export const PRODUCTS = {
     material: "uPVC",
     type: "window",
     installContext: "exterior",
-    visualDescriptor: "uPVC casement window with sculptured outward-opening sash standing slightly proud of the frame, traditional ovolo profile, subtle weld bead visible at corner mitres characteristic of welded uPVC manufacturing, 70mm outer frame with optional 85mm or 110mm mullions and transoms, equal sightlines available with dummy sash option",
+    visualDescriptor: "a uPVC window with a sculptured outward-opening sash standing slightly proud of the frame, traditional ovolo profile, subtle weld bead at the corner mitres characteristic of welded uPVC, 70mm outer frame",
     signatureVisualCue: "outward-opening sculptured sash proud of frame face, period-appropriate proportions, visible welded mitre joints",
     configurations: [
       "Single fixed light",
@@ -135,7 +135,7 @@ export const PRODUCTS = {
     material: "uPVC",
     type: "window",
     installContext: "exterior",
-    visualDescriptor: "uPVC flush casement window with the opening sash sitting flush within the frame face replicating traditional timber joinery, slim sightlines, available in welded grooved finish or seamless StyleLine mechanical-graf joint with no visible weld bead, multi-function weather seal, designed to look authentically like timber",
+    visualDescriptor: "a uPVC flush casement window where the opening part sits flush within the frame face replicating traditional timber joinery, slim sightlines, designed to look authentically like painted timber",
     signatureVisualCue: "fully flush exterior face with no proud sash, slim sightlines, mechanical-jointed corners possible (no weld bead) for period authenticity",
     configurations: [
       "Single fixed light",
@@ -158,7 +158,7 @@ export const PRODUCTS = {
     material: "uPVC",
     type: "patio_door",
     installContext: "exterior",
-    visualDescriptor: "uPVC sliding patio door with slim 24mm interlock sightline, large glazed panels, smooth gliding operation, low threshold option",
+    visualDescriptor: "a uPVC sliding patio door with a slim interlock sightline between panels, large glazed panels, low threshold",
     signatureVisualCue: "ultra-slim 24mm interlock between sliding panels, maximised glass area",
     configurations: [
       "2-pane (1 fixed, 1 sliding)",
@@ -175,7 +175,7 @@ export const PRODUCTS = {
     material: "uPVC",
     type: "french_door",
     installContext: "exterior",
-    visualDescriptor: "uPVC French door pair with flush sash design matching Heritage Flush windows, open-out configuration, slim sightlines, period-authentic timber-look proportions",
+    visualDescriptor: "a uPVC French door pair with a flush sash design matching the Heritage Flush windows, slim sightlines, period-authentic timber-look proportions",
     signatureVisualCue: "matched pair with flush exterior face, dedicated open-out flush French sash",
     configurations: [
       "Pair, equal width",
@@ -195,7 +195,7 @@ export const PRODUCTS = {
     material: "uPVC",
     type: "door",
     installContext: "exterior",
-    visualDescriptor: "uPVC residential entrance door with reinforced multi-chambered profile, typically 70mm or 75mm outer frame, slab-style or panel-style options, multi-point locking, range of glazing apertures and decorative panel options",
+    visualDescriptor: "a uPVC residential entrance door with a reinforced multi-chambered profile, robust slab construction, profile detailing matching the window range",
     signatureVisualCue: "uPVC residential door with consistent profile detailing matching window range, robust slab construction",
     configurations: [
       "Half-glazed panel door",
@@ -218,7 +218,7 @@ export const PRODUCTS = {
     material: "Aluminium",
     type: "window",
     installContext: "exterior",
-    visualDescriptor: "slim aluminium casement window with narrow sightlines and a powder-coated finish, available in fixed, side-hung, top-hung, tilt-and-turn or flush casement configurations",
+    visualDescriptor: "a slim thermally-broken aluminium window with very narrow sightlines and a powder-coated finish, clean contemporary profile",
     signatureVisualCue: "slim flat-faced aluminium frame with sharp 90-degree machined edges, narrow sightlines that look almost too thin to be uPVC, flush powder-coated surface, contemporary architectural feel, the frame noticeably more slender and precise than a plastic window",
     configurations: [
       "Single fixed light",
@@ -241,7 +241,7 @@ export const PRODUCTS = {
     material: "Aluminium",
     type: "door",
     installContext: "exterior",
-    visualDescriptor: "slim aluminium residential or French door matching the Alitherm 400 window sightlines, single or double, open-in or open-out, low threshold",
+    visualDescriptor: "a slim thermally-broken aluminium door matching the Alitherm 400 window sightlines, powder-coated finish, low threshold",
     signatureVisualCue: "matching system aesthetic to Alitherm 400 windows, crisp powder-coated finish",
     configurations: [
       "Single residential door",
@@ -260,7 +260,7 @@ export const PRODUCTS = {
     material: "Aluminium",
     type: "internal_screen",
     installContext: "interior",
-    visualDescriptor: "slim aluminium internal glazed screen with a steel-look industrial aesthetic, ultra-narrow sightlines, multi-pane gridded configuration evoking Crittall heritage windows, fixed glazed screens with hinged single or double doors, pivot or sliding door options",
+    visualDescriptor: "a slim aluminium internal glazed screen with a steel-look industrial Crittall aesthetic, ultra-narrow black grid bars dividing the glass into panes",
     signatureVisualCue: "ultra-narrow matt-black aluminium grid bars dividing the glass into equal panes, slim flat steel-look mullions with crisp square edges, industrial-heritage Crittall aesthetic, the bars genuinely thin and precise, dead-matt black powder finish absorbing light with no shine",
     configurations: [
       "Fixed screen, 2x2 grid",
@@ -302,7 +302,7 @@ export const PRODUCTS = {
     material: "Aluminium",
     type: "door",
     installContext: "exterior",
-    visualDescriptor: "premium aluminium entrance door with a sleek slim profile, single or double configuration, designer hardware",
+    visualDescriptor: "a premium aluminium entrance door with a sleek slim profile and designer hardware",
     signatureVisualCue: "premium aluminium entrance door, refined slim profile, elevated hardware",
     configurations: [
       "Single door",
@@ -321,7 +321,7 @@ export const PRODUCTS = {
     material: "Aluminium",
     type: "bifold",
     installContext: "exterior",
-    visualDescriptor: "slim aluminium bi-fold door with narrow sightlines at the panel junctions, fully glazed clear panels, low threshold, powder-coated finish, configurable from 2 to 7 panes folding internally or externally with optional traffic door",
+    visualDescriptor: "a slim aluminium bi-fold door with very narrow sightlines at the panel junctions, fully glazed clear panels, low threshold, powder-coated finish",
     signatureVisualCue: "ultra-slim flat aluminium frames at the panel junctions, very narrow sightlines maximising glass, sharp machined edges, matt powder-coated surface, expanse of clear glass with thin precise dividing frames, smooth folding action, unmistakably slimmer than uPVC bifolds",
     configurations: [
       "2-pane (folds one way)",
@@ -372,7 +372,7 @@ export const PRODUCTS = {
     material: "Wood",
     type: "window",
     installContext: "exterior",
-    visualDescriptor: "engineered timber casement window with traditional joinery details, factory-painted or stained finish, putty-line or bead-glazed, period-authentic proportions, FSC-certified hardwood or softwood, brass or chrome traditional ironmongery",
+    visualDescriptor: "an engineered timber casement window with traditional joinery details, factory-painted or stained finish, period-authentic timber proportions and depth, real visible wood grain",
     signatureVisualCue: "true timber profile with visible grain, traditional joinery, painted or stained finish, period-authentic timber depth",
     configurations: [
       "Single fixed light",
@@ -394,7 +394,7 @@ export const PRODUCTS = {
     material: "Wood",
     type: "sash_window",
     installContext: "exterior",
-    visualDescriptor: "traditional vertical sliding sash window in engineered timber, weights or spring-balance operation, glazing bars optional, painted or stained finish, fully period-authentic for Georgian, Regency or Victorian properties",
+    visualDescriptor: "a traditional vertical sliding sash window in engineered timber, painted or stained finish, period-authentic for Georgian, Regency or Victorian properties, real visible wood grain and depth",
     signatureVisualCue: "true vertical sliding sash, period proportions with horns optional, glazing bar configuration matched to era",
     configurations: [
       "1-over-1 (Victorian)",
@@ -415,7 +415,7 @@ export const PRODUCTS = {
     material: "Wood",
     type: "door",
     installContext: "exterior",
-    visualDescriptor: "solid timber entrance door with traditional joinery, panelled or glazed configuration, factory-painted or stained finish, brass or chrome period ironmongery, mortice locks, period-authentic detailing",
+    visualDescriptor: "a solid timber entrance door with traditional joinery, factory-painted or stained finish, period-authentic detailing, real visible wood grain",
     signatureVisualCue: "real timber door with visible grain, traditional panelling, period authenticity",
     configurations: [
       "Single panel door (4-panel Victorian)",
@@ -452,6 +452,152 @@ export const PRODUCTS = {
     suitabilityNotes: "Single-storey rear extensions, kitchen extensions, dining additions, flat-roof areas where natural light is needed. Always installed flush into flat roof — show plasterboard reveal internally."
   }
 };
+
+// =============================================================================
+// CONFIGURATION TRANSLATOR
+// Converts a configuration choice into explicit, unambiguous VISUAL language for
+// the image model, with anti-confusion guardrails (e.g. "casement NOT sash").
+// This is the heart of the window-style accuracy fix. Edit the wording freely.
+//
+// translateConfiguration(configString, product) => a clear sentence describing
+// exactly how the unit is divided and how it opens.
+// =============================================================================
+export function translateConfiguration(cfg, product) {
+  if (!cfg) return "";
+  const c = cfg.toLowerCase();
+  const type = product?.type;
+
+  // ---- VERTICAL SLIDING SASH (Gower sash, and any "x-over-y") ----
+  // Only treat as a sliding sash if the product is actually a sash window, OR
+  // the string uses the hyphenated "x-over-y" sash notation. A cottage casement
+  // described as "2 over 2" (with spaces) is NOT a sliding sash.
+  const sashMatch = c.match(/(\d+)\s*-\s*over\s*-\s*(\d+)/);
+  const isCottageCasement = c.includes("cottage");
+  if ((type === "sash_window" || sashMatch) && !isCottageCasement) {
+    if (sashMatch) {
+      const top = sashMatch[1], bottom = sashMatch[2];
+      const eachPanes = parseInt(top);
+      const barNote = eachPanes > 1
+        ? `each sash divided by slim glazing bars into ${top} panes over ${bottom} panes (a classic ${top}-over-${bottom} pattern)`
+        : `a single pane in each sash (${top} over ${bottom}, no glazing bars)`;
+      return `a traditional vertical sliding sash window: two sashes stacked one above the other that slide vertically up and down, ${barNote}, with a horizontal meeting rail across the middle where the two sashes overlap. This is a VERTICAL SLIDING SASH window — it is NOT a side-opening casement and the sashes do not hinge outward`;
+    }
+    if (c.includes("margin")) {
+      return "a vertical sliding sash window with decorative margin glazing bars forming a narrow border of small panes around a larger central pane, two vertically sliding sashes with a horizontal meeting rail. This is a VERTICAL SLIDING SASH, NOT a casement";
+    }
+    return "a traditional vertical sliding sash window with two vertically sliding sashes and a horizontal meeting rail across the middle. VERTICAL SLIDING SASH, NOT a side-opening casement";
+  }
+
+  // ---- BAY WINDOWS ----
+  if (c.includes("bay")) {
+    const lightMatch = c.match(/(\d+)\s*-?\s*light/);
+    const lights = lightMatch ? lightMatch[1] : "three";
+    let shape = "projecting outward from the wall with angled side sections";
+    if (c.includes("splayed")) shape = "gently splayed outward at shallow angles";
+    else if (c.includes("canted")) shape = "canted outward with flat angled side returns";
+    else if (c.includes("square")) shape = "a square bay projecting straight out with perpendicular side returns";
+    return `a true bay window made up of ${lights} separate window lights set into a structure that projects outward from the face of the building, ${shape}, with its own small roof or sill below, the individual lights wrapping around the bay at angles. A genuine three-dimensional projecting bay, NOT a flat window`;
+  }
+
+  // ---- CASEMENT WINDOWS ----
+  if (c.includes("flush casement")) {
+    return "a flush casement window where the opening sash sits perfectly flush within the frame (level with the frame face, not standing proud), opening outward on a side hinge, one rectangular pane per sash. A side-opening flush CASEMENT, NOT a vertical sliding sash";
+  }
+  if (c.includes("side-hung")) {
+    return "a single casement window that opens outward on a side hinge (hinged at one vertical edge like a small door), one rectangular pane, flat in plane. A side-opening CASEMENT — NOT a vertical sliding sash, NOT divided into upper and lower halves";
+  }
+  if (c.includes("top-hung")) {
+    return "a single casement window hinged at the top that opens outward from the bottom edge, one rectangular pane. A top-hung CASEMENT, NOT a sliding sash";
+  }
+  if (c.includes("tilt-and-turn")) {
+    return "a tilt-and-turn window: a single large pane in a frame that can tilt inward at the top or swing inward on a side hinge, modern flush appearance, one clean pane. NOT a sliding sash";
+  }
+  if (c.includes("fixed light") || c === "single fixed light" || c.includes("picture window")) {
+    return "a single fixed (non-opening) window, one large clean rectangular pane of glass with no opening sash, no dividing bars. A fixed picture light";
+  }
+
+  // ---- MULTI-LIGHT CASEMENT COMBINATIONS ----
+  if (c.includes("two-light")) {
+    if (c.includes("fixed")) return "two window lights side by side separated by a single vertical mullion: one light is fixed (non-opening) and the other opens outward on a side hinge as a casement. Side-opening casements, NOT sliding sashes";
+    return "two casement lights side by side separated by a vertical mullion, each opening outward on a side hinge. Casements, NOT sliding sashes";
+  }
+  if (c.includes("three-light")) {
+    return "three window lights in a row separated by two vertical mullions, typically a wider opening casement in the centre flanked by narrower fixed lights, all opening outward as casements where they open. Casements, NOT sliding sashes";
+  }
+  if (c.includes("four-light") || c.includes("2 over 2") || c.includes("2-over-2 cottage")) {
+    return "a cottage-style casement window of four lights arranged two over two in a grid of separate panes divided by mullions and a transom, opening outward as casements. Casement cottage window, NOT a vertical sliding sash";
+  }
+  if (c.includes("cottage")) {
+    return "a multi-light cottage casement window with several panes divided by glazing bars, opening outward on side hinges. Cottage CASEMENT, NOT a sliding sash";
+  }
+
+  // ---- BIFOLD DOORS ----
+  if (type === "bifold") {
+    const paneMatch = c.match(/(\d+)\s*-?\s*pane/);
+    const panes = paneMatch ? paneMatch[1] : "three";
+    let traffic = "";
+    if (c.includes("traffic")) traffic = ", one of the panels acting as a single hinged 'traffic' door for everyday use while the rest fold";
+    return `a bi-fold door made of ${panes} tall fully-glazed panels that concertina-fold and stack neatly to one side, slim frames between large panes of glass${traffic}, running along a track. A folding glazed door wall`;
+  }
+
+  // ---- PATIO / SLIDING DOORS ----
+  if (type === "patio_door") {
+    const paneMatch = c.match(/(\d+)\s*-?\s*pane/);
+    const panes = paneMatch ? paneMatch[1] : "two";
+    return `a sliding patio door with ${panes} large glazed panels, where one or more panels slide horizontally past the fixed panels on a track, very slim interlock between panes. A horizontally SLIDING door, NOT folding, NOT hinged`;
+  }
+
+  // ---- INTERNAL SCREENS (Aluspace / Crittall-style) ----
+  if (type === "internal_screen") {
+    if (c.includes("grid")) {
+      const gridMatch = c.match(/(\d+)\s*x\s*(\d+)/);
+      const grid = gridMatch ? `${gridMatch[1]} by ${gridMatch[2]}` : "multi-pane";
+      return `an internal glazed screen divided into a ${grid} grid of equal rectangular panes by slim black grid bars, Crittall-style industrial aesthetic, fixed screen`;
+    }
+    if (c.includes("door")) {
+      return "an internal glazed screen with slim black grid bars incorporating a glazed door within the screen, Crittall-style industrial aesthetic";
+    }
+    return "an internal glazed screen with slim black Crittall-style grid bars dividing the glass into equal panes";
+  }
+
+  // ---- ROOF LANTERN ----
+  if (type === "roof_lantern") {
+    if (c.includes("pyramid")) return "a pyramid-shaped roof lantern with four triangular glazed slopes meeting at a central apex point, slim frame bars (rafters) running up to the peak";
+    const rafterMatch = c.match(/(\d+)\s*-?\s*rafter/);
+    const rafters = rafterMatch ? rafterMatch[1] : "four";
+    return `a rectangular roof lantern with a ridge along the top and ${rafters} slim glazing bars (rafters) sloping down from the ridge to the perimeter frame, glazed roof structure rising above the flat roofline`;
+  }
+
+  // ---- DOORS (entrance / French / composite / timber) ----
+  if (type === "door" || type === "french_door" || c.includes("door")) {
+    let base = "";
+    if (c.includes("french") || c.includes("pair")) {
+      base = "a pair of doors that open as a matched double set (French doors), each leaf glazed or panelled to match";
+    } else if (c.includes("stable")) {
+      base = "a stable door split horizontally across the middle so the top half can open independently of the bottom half";
+    } else if (c.includes("fully-glazed") || c.includes("full vertical")) {
+      base = "a single door with a large full-height glazed panel";
+    } else if (c.includes("half-glazed") || c.includes("small")) {
+      base = "a single door with a glazed panel in the upper portion and a solid panel below";
+    } else if (c.includes("solid") || c.includes("panel")) {
+      base = "a single solid panelled door with no glazing";
+      if (c.includes("4-panel")) base = "a single door with a traditional four-panel arrangement, solid";
+      if (c.includes("6-panel")) base = "a single door with a traditional six-panel arrangement, solid";
+    } else {
+      base = "a single entrance door";
+    }
+    // sidelights / toplights
+    const extras = [];
+    if (c.includes("two sidelight")) extras.push("a fixed glazed sidelight panel on each side of the door");
+    else if (c.includes("single sidelight") || c.includes("with sidelight")) extras.push("a fixed glazed sidelight panel to one side of the door");
+    if (c.includes("toplight")) extras.push("a fixed glazed toplight (transom panel) across the top above the door");
+    if (extras.length) base += ", with " + extras.join(" and ");
+    return base;
+  }
+
+  // ---- FALLBACK ----
+  return cfg;
+}
 
 // =============================================================================
 // HARDWARE LIBRARY
@@ -564,38 +710,54 @@ export const COLOUR_SETS = {
 };
 
 // =============================================================================
-// HOUSING STOCK CATALOGUE — by service-area county
+// HOUSING STOCK CATALOGUE — by service-area CITY
+// IMPORTANT: descriptions deliberately describe WALLS, ROOF, PROPORTIONS and
+// SETTING only — NOT window style. Window/door style always comes from the
+// chosen product, so the house description must never mention sashes, bays,
+// casements etc. or it will fight the product on full-house views.
+// Each city keeps its authentic local building material for realism.
 // =============================================================================
 export const HOUSING_STOCK = {
-  bedfordshire: [
-    { id: "beds_1930s_semi", label: "1930s red brick suburban semi (Bedford / Luton fringe)", description: "1930s suburban semi-detached, red brick lower with painted render or pebbledash upper, hipped tile roof, bay window front, tile-hung detail optional, modest front garden with low brick wall, driveway, mature suburban planting" },
-    { id: "beds_edwardian_terrace", label: "Edwardian terrace (Bedford town)", description: "Edwardian two-storey terrace, red brick with cream stone detail, slate or tile roof, bay window ground floor, original or replacement sash windows, small front yard with low brick wall, on-street parking" },
-    { id: "beds_modern_newbuild", label: "Modern Bedfordshire new-build (Wixams / Marston Vale)", description: "Modern new-build estate house, red brick or buff brick, tile roof, mixed cladding panels in some examples, integrated garage, block-paved driveway, contemporary proportions, small new-planted front garden" },
-    { id: "beds_market_town", label: "Market town stock (Ampthill / Woburn / Leighton Buzzard)", description: "Market town two-storey property, mix of red brick or render, tile or slate roof, period proportions, often Georgian-influenced symmetry, on-street or mews-style approach" }
+  cambridge: [
+    { id: "cam_victorian_terrace", label: "Victorian terrace", description: "a two-storey Victorian terraced house in gault (pale yellow-cream) Cambridge brick, slate roof, two storeys, modest proportions, a small front garden behind a low brick wall or iron railing, mature street trees on a quiet residential road" },
+    { id: "cam_edwardian_semi", label: "Edwardian semi-detached", description: "a two-storey Edwardian semi-detached house in yellow-cream Cambridge brick with some red-brick detailing, slate roof, generous proportions, a low front wall and short tiled path, leafy established street" },
+    { id: "cam_college_townhouse", label: "College-quarter townhouse", description: "an elegant three-storey city townhouse in painted render or pale yellow brick, period proportions, set on a quiet conservation street with mature street trees and a hint of a walled garden" },
+    { id: "cam_1930s_semi", label: "1930s suburban semi", description: "a 1930s suburban semi-detached house, red brick to the ground floor with painted render or pebbledash above, hipped tiled roof, a modest front garden with a low wall and a driveway, mature suburban planting" },
+    { id: "cam_newbuild", label: "Modern new-build (Eddington / Trumpington)", description: "a modern new-build house in pale buff brick with some timber or render cladding panels, tiled roof, clean contemporary proportions, an integrated garage and block-paved driveway, newly landscaped front garden" }
   ],
-  cambridgeshire: [
-    { id: "cambs_victorian_terrace", label: "Cambridge Victorian terrace", description: "Cambridge Victorian terrace, two storey, gault or yellow brick characteristic of Cambridge, slate roof, sash window heritage, small front garden with low brick or iron railing, mature street trees" },
-    { id: "cambs_newbuild_cambourne", label: "Modern Cambridgeshire new-build (Cambourne / Northstowe)", description: "Modern Cambridgeshire new-build estate house, mix of buff brick and weatherboard cladding, tile roof, integrated garage, contemporary proportions, landscaped communal areas, block driveway" },
-    { id: "cambs_fenland_farmhouse", label: "Fenland brick farmhouse (rural Cambridgeshire)", description: "Fenland farmhouse, two storey red or buff brick, pantile or slate roof, generous proportions, set in flat open landscape with big sky, mature trees, gravel driveway" },
-    { id: "cambs_college_townhouse", label: "Cambridge college-quarter townhouse", description: "Cambridge city townhouse, painted render or yellow brick, period proportions, sash windows, set on quiet conservation street, mature street trees, walled garden hint" }
+  peterborough: [
+    { id: "pboro_victorian_terrace", label: "Victorian terrace", description: "a two-storey Victorian terraced house in warm red brick, slate roof, two storeys, a small front yard behind a low wall, on-street parking, mature street trees typical of inner Peterborough" },
+    { id: "pboro_1930s_semi", label: "1930s suburban semi", description: "a 1930s suburban semi-detached house, red brick to the ground floor with render or pebbledash above, hipped tiled roof, a modest front garden, low wall and driveway, established suburban street" },
+    { id: "pboro_stone_village", label: "Limestone village house (Barnack / Castor)", description: "a village house in honey-coloured local limestone (pale Lincolnshire-edge limestone, NOT orange ironstone), stone-tile or slate roof, deep window reveals showing the thickness of the stone walls, cottage proportions, a country garden behind a low stone wall" },
+    { id: "pboro_newbuild", label: "Modern new-build (Hampton / Paston)", description: "a modern new-build estate house in red or buff brick with some cladding panels, tiled roof, contemporary proportions, integrated garage and block-paved driveway, small newly planted front garden" },
+    { id: "pboro_fenland_farmhouse", label: "Fenland farmhouse", description: "a Fenland farmhouse in red or buff brick, pantile or slate roof, generous symmetrical proportions, set in flat open agricultural landscape with big open sky, mature trees and a gravel approach" }
   ],
-  northamptonshire: [
-    { id: "northants_ironstone_village", label: "Ironstone village house (Rural Northamptonshire)", description: "Northamptonshire ironstone village house, characteristic warm orange-brown ironstone walls (NOT yellow Cotswold, NOT grey limestone), stone or slate roof, mullion windows or stone-surrounded openings, cottage proportions, mature country garden with stone walls" },
-    { id: "northants_red_brick_terrace", label: "Red brick Victorian terrace (Wellingborough / Kettering / Northampton)", description: "Red brick Victorian terrace, two storey, slate roof, bay window option, small front yard, on-street parking, mature street trees, Northampton industrial-town context" },
-    { id: "northants_daventry_estate", label: "Modern Daventry estate house", description: "Modern estate house, red or buff brick, tile roof, integrated garage, block driveway, suburban planting, contemporary new-build proportions" }
+  northampton: [
+    { id: "ntn_ironstone_village", label: "Ironstone village house", description: "a village house in characteristic warm orange-brown Northamptonshire ironstone (NOT yellow Cotswold, NOT grey limestone), stone or slate roof, deep stone-surrounded openings, cottage proportions, a mature country garden with stone walls" },
+    { id: "ntn_red_brick_terrace", label: "Red brick Victorian terrace", description: "a two-storey red brick Victorian terraced house, slate roof, a small front yard, on-street parking, mature street trees, a town residential setting" },
+    { id: "ntn_1930s_semi", label: "1930s suburban semi", description: "a 1930s suburban semi-detached house, red brick to the ground floor with render or pebbledash above, hipped tiled roof, a modest front garden with a low wall and driveway, mature suburban planting" },
+    { id: "ntn_newbuild", label: "Modern new-build (Upton / Wootton)", description: "a modern new-build estate house in red or buff brick with cladding panels, tiled roof, contemporary proportions, integrated garage, block-paved driveway and a small landscaped front garden" }
   ],
-  lincolnshire: [
-    { id: "lincs_limestone_village", label: "Limestone village house (Rural Lincolnshire)", description: "Lincolnshire limestone village house, honey-coloured limestone walls (NOT ironstone orange, NOT Cotswold yellow but pale honey), stone-tile or slate roof, deep window reveals showing stone wall thickness, cottage or farmhouse proportions, country garden, stone walls or hedge boundaries" },
-    { id: "lincs_lincoln_terrace", label: "Lincoln Victorian terrace", description: "Lincoln Victorian terrace, red brick, slate roof, sash windows or bay windows, small front yard, on-street parking, period character" },
-    { id: "lincs_fenland_farmhouse", label: "Fenland farmhouse (rural Lincolnshire)", description: "Fenland farmhouse, red brick, pantile roof, set in flat open agricultural landscape, big sky, generous garden, gravel approach, mature trees" }
+  lincoln: [
+    { id: "lin_limestone_village", label: "Limestone village / cathedral-quarter house", description: "a house in honey-coloured Lincolnshire limestone (pale honey, NOT orange ironstone, NOT Cotswold yellow), stone-tile or slate roof, deep window reveals showing the thickness of the stone walls, period proportions, set on a characterful street or in a country garden behind a low stone wall" },
+    { id: "lin_red_brick_terrace", label: "Red brick Victorian terrace", description: "a two-storey red brick Victorian terraced house, slate roof, a small front yard, on-street parking, period character, mature street trees" },
+    { id: "lin_1930s_semi", label: "1930s suburban semi", description: "a 1930s suburban semi-detached house, red brick to the ground floor with render or pebbledash above, hipped tiled roof, a modest front garden, low wall and driveway, established suburban street" },
+    { id: "lin_newbuild", label: "Modern new-build", description: "a modern new-build estate house in red or buff brick with cladding panels, tiled roof, contemporary proportions, integrated garage and block-paved driveway, newly planted front garden" }
   ],
-  leicestershire: [
-    { id: "leics_red_brick_terrace", label: "Leicester red brick terrace", description: "Leicester Victorian or Edwardian red brick terrace, two storey, slate roof, bay window option, small front yard with low brick wall, on-street parking, varied front doors typical of multi-decade ownership, mature street trees" },
-    { id: "leics_charnwood_granite", label: "Granite stone Charnwood village house (Rural Leicestershire)", description: "Charnwood village house in characteristic dark grey-pink Charnwood granite (volcanic stone, NOT limestone), stone tile or slate roof, deep window reveals, country garden, stone walls or hedge boundaries, set in rolling Leicestershire countryside" },
-    { id: "leics_loughborough_modern", label: "Modern Loughborough / Hinckley estate", description: "Modern estate house, red or buff brick, tile roof, integrated garage, block driveway, suburban planting, contemporary new-build proportions" },
-    { id: "leics_market_town", label: "Hosiery-town Victorian stock (Hinckley / Market Harborough)", description: "Victorian or Edwardian two-storey hosiery-town terrace or semi, red brick with stone detailing, slate roof, period proportions, small front garden, on-street or short driveway" }
+  bedford: [
+    { id: "bed_edwardian_terrace", label: "Edwardian terrace", description: "a two-storey Edwardian terraced house in red brick with cream stone detailing, slate or tiled roof, a small front yard behind a low wall, on-street parking, mature street trees" },
+    { id: "bed_1930s_semi", label: "1930s suburban semi", description: "a 1930s suburban semi-detached house, red brick to the ground floor with painted render or pebbledash above, hipped tiled roof, a modest front garden with a low brick wall and driveway, mature suburban planting" },
+    { id: "bed_market_town", label: "Market-town house (Ampthill / Woburn area)", description: "a two-storey market-town house in a mix of red brick or painted render, tiled or slate roof, Georgian-influenced symmetrical proportions, set on a characterful street or mews approach" },
+    { id: "bed_newbuild", label: "Modern new-build (Wixams / Marston Vale)", description: "a modern new-build estate house in red or buff brick with some cladding panels, tiled roof, contemporary proportions, integrated garage and block-paved driveway, small newly planted front garden" }
+  ],
+  kettering: [
+    { id: "ket_ironstone_village", label: "Ironstone village house", description: "a village house in characteristic warm orange-brown Northamptonshire ironstone (NOT yellow Cotswold, NOT grey limestone), stone or slate roof, deep stone-surrounded openings, cottage proportions, a mature country garden with stone walls" },
+    { id: "ket_red_brick_terrace", label: "Red brick Victorian terrace", description: "a two-storey red brick Victorian terraced house, slate roof, a small front yard, on-street parking, mature street trees, a hosiery-town residential setting" },
+    { id: "ket_1930s_semi", label: "1930s suburban semi", description: "a 1930s suburban semi-detached house, red brick to the ground floor with render or pebbledash above, hipped tiled roof, a modest front garden with a low wall and driveway, mature suburban planting" },
+    { id: "ket_newbuild", label: "Modern new-build", description: "a modern new-build estate house in red or buff brick with cladding panels, tiled roof, contemporary proportions, integrated garage, block-paved driveway and a small landscaped front garden" }
   ]
 };
+
 
 // =============================================================================
 // ELEVATION LAYOUT SUGGESTIONS
@@ -607,13 +769,13 @@ export const HOUSING_STOCK = {
 
 // Map each housing stock id to a broad archetype so suggestions stay maintainable.
 export function houseArchetype(housingId = "") {
-  if (/newbuild|modern|estate|daventry|loughborough|cambourne/i.test(housingId)) return "newbuild";
+  if (/newbuild|modern|estate/i.test(housingId)) return "newbuild";
   if (/farmhouse/i.test(housingId)) return "farmhouse";
-  if (/village|ironstone|limestone|granite/i.test(housingId)) return "village_stone";
+  if (/ironstone|limestone|stone_village|granite/i.test(housingId)) return "village_stone";
   if (/townhouse|college/i.test(housingId)) return "townhouse";
+  if (/market_town/i.test(housingId)) return "market_town";
   if (/terrace/i.test(housingId)) return "terrace_period";
   if (/semi/i.test(housingId)) return "semi";
-  if (/market_town/i.test(housingId)) return "market_town";
   return "semi";
 }
 
@@ -735,9 +897,9 @@ export const SCENE_PRESETS = [
   },
   {
     id: "trust",
-    label: "Trust / installation",
-    description: "Shows the product being expertly fitted by professional installers in branded uniform. Builds credibility and showcases the team.",
-    intent: "documentary-style installation photography, installer working with focus and care, product being fitted with precision, real working environment, builds trust through visible craft"
+    label: "Freshly installed / completed",
+    description: "A just-completed, spotless installation — the product newly fitted and pristine, conveying quality workmanship without showing people.",
+    intent: "documentary-style photograph of a freshly completed installation, the product newly fitted and immaculate, clean crisp sealant lines and tidy reveals, a sense of quality workmanship just finished, no people present"
   },
   {
     id: "lifestyle",
@@ -1123,6 +1285,17 @@ export const INTERIOR_STYLES = {
 };
 
 export const ROOMS = ["Living room", "Kitchen", "Bathroom", "Dining room", "Bedroom", "Hallway", "Conservatory interior", "Orangery", "Stairwell / landing"];
+
+// Options for "what's visible outside" when shooting from inside looking out.
+export const EXTERIOR_VIEW_OPTIONS = [
+  { id: "", label: "— Not visible / leave blank —", description: "" },
+  { id: "rear_garden_patio", label: "Rear garden with patio and lawn", description: "a typical UK rear garden visible beyond, with a paved patio, a neat lawn, planted borders and a fence or hedge boundary, soft daylight" },
+  { id: "rear_garden_mature", label: "Mature landscaped garden", description: "a mature, well-planted UK garden beyond, established shrubs and trees, a paved or decked area, a sense of privacy and greenery" },
+  { id: "suburban_street", label: "Suburban street", description: "a quiet UK suburban street visible beyond, with neighbouring houses, parked cars and street trees softly out of focus" },
+  { id: "countryside", label: "Open countryside / fields", description: "open British countryside beyond, green fields, hedgerows and distant trees under a soft overcast sky" },
+  { id: "courtyard", label: "Courtyard / small paved yard", description: "a small enclosed paved courtyard or yard beyond, with potted plants and a boundary wall" },
+  { id: "blurred_greenery", label: "Soft blurred greenery", description: "soft, gently out-of-focus greenery and daylight beyond the glass, no specific detail, keeping focus on the interior" }
+];
 
 export const SHOT_ANGLES = [
   { id: "eye_level", label: "Eye level", description: "eye-level horizontal, natural human-perspective viewpoint" },

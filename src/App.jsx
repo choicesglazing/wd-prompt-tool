@@ -8,8 +8,6 @@ import {
   LIGHTING_OPTIONS,
   GROUND_CONDITIONS,
   SEASONS,
-  PEOPLE_TYPES,
-  ETHNICITY_DEFAULTS,
   PETS,
   PLATFORMS,
   ASSET_TYPES,
@@ -19,6 +17,7 @@ import {
   COMPDOOR_GLASS,
   INTERIOR_STYLES,
   ROOMS,
+  EXTERIOR_VIEW_OPTIONS,
   SHOT_ANGLES,
   COMPOSITIONS,
   FRAMING_LENS,
@@ -30,11 +29,12 @@ import { buildPrompt, buildVariations, buildCarousel, buildVideoShotList } from 
 // Helpers
 // =========================================================================
 const COUNTIES = [
-  { id: "bedfordshire", label: "Bedfordshire" },
-  { id: "cambridgeshire", label: "Cambridgeshire" },
-  { id: "northamptonshire", label: "Northamptonshire" },
-  { id: "lincolnshire", label: "Lincolnshire" },
-  { id: "leicestershire", label: "Leicestershire" }
+  { id: "cambridge", label: "Cambridge" },
+  { id: "peterborough", label: "Peterborough" },
+  { id: "northampton", label: "Northampton" },
+  { id: "lincoln", label: "Lincoln" },
+  { id: "bedford", label: "Bedford" },
+  { id: "kettering", label: "Kettering" }
 ];
 
 const SHOOT_LOCATIONS = [
@@ -94,7 +94,7 @@ export default function App() {
   const [exteriorVisible, setExteriorVisible] = useState("");
   const [partitionRooms, setPartitionRooms] = useState("");
 
-  const [county, setCounty] = useState("bedfordshire");
+  const [county, setCounty] = useState("cambridge");
   const [housingId, setHousingId] = useState("");
 
   const [scenePresetId, setScenePresetId] = useState("hero");
@@ -105,11 +105,6 @@ export default function App() {
   const [groundId, setGroundId] = useState("dry");
   const [seasonId, setSeasonId] = useState("spring");
 
-  const [peopleType, setPeopleType] = useState("none");
-  const [ethnicity, setEthnicity] = useState("white_british");
-  const [ageRange, setAgeRange] = useState("");
-  const [peopleAction, setPeopleAction] = useState("");
-  const [mobilityAid, setMobilityAid] = useState(false);
   const [pets, setPets] = useState("none");
 
   const [livedInLevel, setLivedInLevel] = useState("moderate");
@@ -224,10 +219,7 @@ export default function App() {
     if (isSingleLight && isFullView) {
       arr.push("You've chosen a single-window configuration with a full-house view. The tool now forces every window on the house to match your product — but for the cleanest result either use a 'partial' view focused on the product, or fill in 'Elevation make-up' to describe the other openings.");
     }
-    // Atmospheric + people in motion
-    if (scenePresetId === "atmospheric" && peopleType !== "none" && peopleAction?.toLowerCase().includes("walk")) {
-      arr.push("Atmospheric mood + figure in motion is harder to achieve. Consider lifestyle warmth scene preset for active subjects, or atmospheric mood with a still subject.");
-    }
+    // Atmospheric + product (no people now)
     // Hardware mix check
     const finishes = new Set();
     if (hardware?.finish) finishes.add(hardware.finish);
@@ -239,20 +231,12 @@ export default function App() {
     if (assetType === "video" && duration > 15 && (platform === "instagram" || platform === "facebook")) {
       arr.push("Reels and short-form video typically perform best at 7–15 seconds. Consider shortening.");
     }
-    // Children + Veo 3
-    if (peopleType === "homeowner_family" && targetModel === "veo3") {
-      arr.push("Veo 3 has guardrails around generating children. Children will be framed from behind, in motion blur, or background — never as primary subject of close-up.");
-    }
     // Atmospheric on Nano Banana
     if (scenePresetId === "atmospheric" && targetModel === "nanobanana") {
       arr.push("Atmospheric blue-hour interiors typically perform better in Flux or Midjourney than Nano Banana. Consider switching model.");
     }
-    // Multi-depth interior with exterior visible
-    if (shootLocation === "interior" && exteriorVisible && peopleType !== "none") {
-      arr.push("Interior with visible exterior + people creates multiple depth planes. Expect to regenerate several attempts to get a clean result.");
-    }
     return arr;
-  }, [product, shootLocation, scenePresetId, peopleType, peopleAction, hardware, assetType, duration, platform, targetModel, exteriorVisible, configuration, exteriorAspect]);
+  }, [product, shootLocation, scenePresetId, hardware, assetType, duration, platform, targetModel, exteriorVisible, configuration, exteriorAspect]);
 
   // ---------- Generate ----------
   function handleGenerate() {
@@ -265,9 +249,15 @@ export default function App() {
 
     // Pick camera language by context
     let cameraLang = CAMERA_LANGUAGE.exterior_kerb;
-    if (shootLocation === "interior") cameraLang = peopleType !== "none" ? CAMERA_LANGUAGE.interior_lifestyle : CAMERA_LANGUAGE.interior_wide;
+    if (shootLocation === "interior") cameraLang = CAMERA_LANGUAGE.interior_wide;
     else if (scenePresetId === "technical") cameraLang = technicalIsolation ? CAMERA_LANGUAGE.macro_studio : CAMERA_LANGUAGE.exterior_detail;
     else if (assetType === "video") cameraLang = CAMERA_LANGUAGE.video_cinematic;
+
+    // Resolve the exterior-view dropdown id into its description for the prompt.
+    const exteriorVisibleResolved = (() => {
+      const opt = EXTERIOR_VIEW_OPTIONS.find(o => o.id === exteriorVisible);
+      return opt ? opt.description : exteriorVisible; // allow free text fallback
+    })();
 
     const brief = {
       productId,
@@ -284,7 +274,7 @@ export default function App() {
       elevationLayout,
       room,
       interiorStyle,
-      exteriorVisible,
+      exteriorVisible: exteriorVisibleResolved,
       partitionRooms,
 
       county,
@@ -304,13 +294,7 @@ export default function App() {
 
       cameraLanguage: cameraLang,
 
-      people: peopleType === "none" ? null : {
-        peopleType,
-        ethnicity: ETHNICITY_DEFAULTS.find(e => e.id === ethnicity)?.label,
-        ageRange,
-        action: peopleAction,
-        mobilityAid
-      },
+      people: null,
       pets,
 
       livedInLevel,
@@ -373,11 +357,6 @@ export default function App() {
         groundId={groundId} setGroundId={setGroundId}
         seasonId={seasonId} setSeasonId={setSeasonId}
         // people
-        peopleType={peopleType} setPeopleType={setPeopleType}
-        ethnicity={ethnicity} setEthnicity={setEthnicity}
-        ageRange={ageRange} setAgeRange={setAgeRange}
-        peopleAction={peopleAction} setPeopleAction={setPeopleAction}
-        mobilityAid={mobilityAid} setMobilityAid={setMobilityAid}
         pets={pets} setPets={setPets}
         // realism
         livedInLevel={livedInLevel} setLivedInLevel={setLivedInLevel}
@@ -419,9 +398,7 @@ function FormPanel(props) {
     scenePresetId, setScenePresetId, shotAngleId, setShotAngleId,
     compositionId, setCompositionId, framingId, setFramingId,
     lightingId, setLightingId, groundId, setGroundId, seasonId, setSeasonId,
-    peopleType, setPeopleType, ethnicity, setEthnicity,
-    ageRange, setAgeRange, peopleAction, setPeopleAction,
-    mobilityAid, setMobilityAid, pets, setPets,
+    pets, setPets,
     livedInLevel, setLivedInLevel, technicalIsolation, setTechnicalIsolation,
     platform, setPlatform, assetType, setAssetType,
     aspectRatio, setAspectRatio, platformAspectRatios,
@@ -594,8 +571,10 @@ function FormPanel(props) {
                 </Field>
               )}
             </div>
-            <Field label="Visible through the window/door (optional)" hint="Only if applicable — e.g. 'UK rear garden with paved patio and mature hedge boundary'">
-              <input className="wd-input" value={exteriorVisible} onChange={(e) => setExteriorVisible(e.target.value)} placeholder="Leave blank if not visible or not relevant" />
+            <Field label="Visible through the window/door (optional)" hint="What can be seen outside when looking out from inside. Pick an option for a consistent, well-described view.">
+              <select className="wd-select" value={exteriorVisible} onChange={(e) => setExteriorVisible(e.target.value)}>
+                {EXTERIOR_VIEW_OPTIONS.map(o => <option key={o.id} value={o.id}>{o.label}</option>)}
+              </select>
             </Field>
           </>
         )}
@@ -645,76 +624,50 @@ function FormPanel(props) {
             <select className="wd-select" value={shotAngleId} onChange={(e) => setShotAngleId(e.target.value)}>
               {SHOT_ANGLES.map(a => <option key={a.id} value={a.id}>{a.label}</option>)}
             </select>
+            <OptionNote text={SHOT_ANGLES.find(a => a.id === shotAngleId)?.description} />
           </Field>
           <Field label="Composition">
             <select className="wd-select" value={compositionId} onChange={(e) => setCompositionId(e.target.value)}>
               {COMPOSITIONS.map(c => <option key={c.id} value={c.id}>{c.label}</option>)}
             </select>
+            <OptionNote text={COMPOSITIONS.find(c => c.id === compositionId)?.description} />
           </Field>
           <Field label="Framing / lens">
             <select className="wd-select" value={framingId} onChange={(e) => setFramingId(e.target.value)}>
               {FRAMING_LENS.map(f => <option key={f.id} value={f.id}>{f.label}</option>)}
             </select>
+            <OptionNote text={FRAMING_LENS.find(f => f.id === framingId)?.description} />
           </Field>
           <Field label="Lighting condition">
             <select className="wd-select" value={lightingId} onChange={(e) => setLightingId(e.target.value)}>
               {LIGHTING_OPTIONS.map(l => <option key={l.id} value={l.id}>{l.label}</option>)}
             </select>
+            <OptionNote text={LIGHTING_OPTIONS.find(l => l.id === lightingId)?.description} />
           </Field>
           <Field label="Ground / weather">
             <select className="wd-select" value={groundId} onChange={(e) => setGroundId(e.target.value)}>
               {GROUND_CONDITIONS.map(g => <option key={g.id} value={g.id}>{g.label}</option>)}
             </select>
+            <OptionNote text={GROUND_CONDITIONS.find(g => g.id === groundId)?.description} />
           </Field>
           <Field label="Season">
             <select className="wd-select" value={seasonId} onChange={(e) => setSeasonId(e.target.value)}>
               {SEASONS.map(s => <option key={s.id} value={s.id}>{s.label}</option>)}
             </select>
+            <OptionNote text={SEASONS.find(s => s.id === seasonId)?.description} />
           </Field>
         </div>
       </Section>
 
       {/* SECTION 4 — People & realism */}
-      <Section num="04" title="People & realism">
-        <Field label="People">
-          <select className="wd-select" value={peopleType} onChange={(e) => setPeopleType(e.target.value)}>
-            {PEOPLE_TYPES.map(p => <option key={p.id} value={p.id}>{p.label}</option>)}
-          </select>
-        </Field>
-
-        {peopleType !== "none" && peopleType !== "installer" && (
-          <>
-            <div className="wd-grid-2">
-              <Field label="Ethnicity">
-                <select className="wd-select" value={ethnicity} onChange={(e) => setEthnicity(e.target.value)}>
-                  {ETHNICITY_DEFAULTS.map(e => <option key={e.id} value={e.id}>{e.label}</option>)}
-                </select>
-              </Field>
-              <Field label="Age (override default)">
-                <input className="wd-input" value={ageRange} onChange={(e) => setAgeRange(e.target.value)} placeholder="e.g. mid 40s" />
-              </Field>
-            </div>
-            <Field label="What they're doing (optional)" hint="A natural action — opening a door, holding a mug, walking through. Leave blank for default.">
-              <input className="wd-input" value={peopleAction} onChange={(e) => setPeopleAction(e.target.value)} placeholder="e.g. opening the bifold doors" />
-            </Field>
-            {peopleType === "older_homeowner" && (
-              <Field label="Mobility aid">
-                <Segments value={mobilityAid ? "yes" : "no"} onChange={(v) => setMobilityAid(v === "yes")} options={[
-                  { value: "no", label: "No" },
-                  { value: "yes", label: "Walking frame / aid" }
-                ]} />
-              </Field>
-            )}
-          </>
-        )}
-
-        <Field label="Pets">
+      <Section num="04" title="Realism & detail">
+        <Field label="Pets" hint="Pets add life to a scene. People are intentionally not included, as empty-property shots render far more realistically.">
           <select className="wd-select" value={pets} onChange={(e) => setPets(e.target.value)}>
             {PETS.map(p => <option key={p.id} value={p.id}>{p.label}</option>)}
           </select>
         </Field>
 
-        <Field label="Lived-in realism level" hint="How much British domestic detail to inject — wheelie bins, mugs, throws, mature gardens.">
+        <Field label="Lived-in realism level" hint="How much British domestic detail to inject — wheelie bins, mugs, throws, mature gardens. This is what stops empty rooms and houses looking sterile and fake.">
           <Segments value={livedInLevel} onChange={setLivedInLevel} options={LIVED_IN_LEVELS.map(l => ({ value: l.id, label: l.label }))} />
         </Field>
       </Section>
@@ -817,6 +770,11 @@ function Field({ label, hint, children }) {
       {children}
     </div>
   );
+}
+
+function OptionNote({ text }) {
+  if (!text) return null;
+  return <div className="wd-option-note" style={{ fontSize: 12, color: "#6a7886", marginTop: 5, lineHeight: 1.4 }}>{text}</div>;
 }
 
 function Segments({ value, onChange, options }) {

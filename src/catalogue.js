@@ -255,6 +255,50 @@ export const PRODUCTS = {
     glazingBars: ["None", "Applied bars"],
     suitabilityNotes: "Entrance doors and French doors for matched-system installs."
   },
+  smartHeritageWindow: {
+    name: "Smart Alitherm Heritage Window",
+    material: "Aluminium",
+    type: "window",
+    installContext: "exterior",
+    visualDescriptor: "a slim aluminium window in the steel-look heritage style, designed to replicate a traditional vintage steel window, ultra-narrow sightlines, a fine 'step' sash profile, often with slim astragal glazing bars dividing the glass, powder-coated finish",
+    signatureVisualCue: "very fine ultra-slim steel-look aluminium frames and glazing bars, vintage industrial 'Crittall' steel-window character, much finer and more delicate than standard casement frames, period-authentic proportions, typically in matt black",
+    configurations: [
+      "Single fixed light",
+      "Single side-hung casement",
+      "Single top-hung casement",
+      "Tilt-and-turn",
+      "Two-light: fixed + side-hung opener",
+      "Three-light: fixed + opener + fixed",
+      "Multi-pane steel-look grid (2x2)",
+      "Multi-pane steel-look grid (3x3)",
+      "Multi-pane steel-look grid (tall 1x3)"
+    ],
+    colours: "smart",
+    hardware: ["windowHeritage"],
+    glazingBars: ["None", "Slim astragal bars (steel-look)", "Georgian bars", "Margin bars (steel-look)"],
+    suitabilityNotes: "Period properties, conservation areas, listed buildings, characterful refurbishments, and contemporary homes wanting the steel-look industrial aesthetic. The aluminium choice when a genuine heritage steel-window look is wanted."
+  },
+  smartHeritageDoor: {
+    name: "Smart Alitherm Heritage Door (entrance / French)",
+    material: "Aluminium",
+    type: "door",
+    installContext: "exterior",
+    visualDescriptor: "a slim aluminium door in the steel-look heritage style replicating a traditional vintage steel door, ultra-narrow sightlines matching the Heritage windows, large glazed area often divided by slim astragal glazing bars, powder-coated finish, low threshold",
+    signatureVisualCue: "very fine ultra-slim steel-look aluminium frames and glazing bars matching the Heritage window range, vintage industrial 'Crittall' steel-door character, slim and elegant, typically in matt black",
+    configurations: [
+      "Single residential door",
+      "Single door with steel-look glazing bars",
+      "Pair of French doors",
+      "Pair of French doors with steel-look glazing bars",
+      "Door with single sidelight",
+      "Door with two sidelights",
+      "Door with toplight"
+    ],
+    colours: "smart",
+    hardware: ["entranceDoor"],
+    glazingBars: ["None", "Slim astragal bars (steel-look)", "Georgian bars"],
+    suitabilityNotes: "Steel-look heritage entrance and French doors, matched to the Heritage window range. Period properties, conservation projects, and industrial-aesthetic contemporary homes."
+  },
   smartAluspace: {
     name: "Smart Aluspace (internal partition)",
     material: "Aluminium",
@@ -500,8 +544,29 @@ export function translateConfiguration(cfg, product) {
   }
 
   // ---- CASEMENT WINDOWS ----
+  // Steel-look heritage multi-pane grid (Smart Heritage) — check before plain casement.
+  if (c.includes("steel-look grid") || c.includes("multi-pane steel")) {
+    const gridMatch = c.match(/(\d+)\s*x\s*(\d+)/);
+    const grid = gridMatch ? `a ${gridMatch[1]} by ${gridMatch[2]} grid` : (c.includes("1x3") || c.includes("tall") ? "a tall column of three stacked panes" : "a multi-pane grid");
+    return `a steel-look heritage window divided into ${grid} of equal rectangular panes by very slim astragal glazing bars, replicating a vintage steel Crittall window, ultra-fine sightlines, flat in plane. A fixed or casement steel-look grid window, NOT a vertical sliding sash`;
+  }
   if (c.includes("flush casement")) {
     return "a flush casement window where the opening sash sits perfectly flush within the frame (level with the frame face, not standing proud), opening outward on a side hinge, one rectangular pane per sash. A side-opening flush CASEMENT, NOT a vertical sliding sash";
+  }
+  // Multi-light combinations must be checked BEFORE single side-hung/top-hung,
+  // because their strings also contain "side-hung".
+  if (c.includes("two-light")) {
+    if (c.includes("fixed")) return "two window lights side by side separated by a single vertical mullion: one light is fixed (non-opening) and the other opens outward on a side hinge as a casement. Side-opening casements, NOT sliding sashes";
+    return "two casement lights side by side separated by a vertical mullion, each opening outward on a side hinge. Casements, NOT sliding sashes";
+  }
+  if (c.includes("three-light")) {
+    return "three window lights in a row separated by two vertical mullions, typically a wider opening casement in the centre flanked by narrower fixed lights, all opening outward as casements where they open. Casements, NOT sliding sashes";
+  }
+  if (c.includes("four-light") || c.includes("2 over 2") || c.includes("2-over-2 cottage")) {
+    return "a cottage-style casement window of four lights arranged two over two in a grid of separate panes divided by mullions and a transom, opening outward as casements. Casement cottage window, NOT a vertical sliding sash";
+  }
+  if (c.includes("cottage")) {
+    return "a multi-light cottage casement window with several panes divided by glazing bars, opening outward on side hinges. Cottage CASEMENT, NOT a sliding sash";
   }
   if (c.includes("side-hung")) {
     return "a single casement window that opens outward on a side hinge (hinged at one vertical edge like a small door), one rectangular pane, flat in plane. A side-opening CASEMENT — NOT a vertical sliding sash, NOT divided into upper and lower halves";
@@ -516,20 +581,7 @@ export function translateConfiguration(cfg, product) {
     return "a single fixed (non-opening) window, one large clean rectangular pane of glass with no opening sash, no dividing bars. A fixed picture light";
   }
 
-  // ---- MULTI-LIGHT CASEMENT COMBINATIONS ----
-  if (c.includes("two-light")) {
-    if (c.includes("fixed")) return "two window lights side by side separated by a single vertical mullion: one light is fixed (non-opening) and the other opens outward on a side hinge as a casement. Side-opening casements, NOT sliding sashes";
-    return "two casement lights side by side separated by a vertical mullion, each opening outward on a side hinge. Casements, NOT sliding sashes";
-  }
-  if (c.includes("three-light")) {
-    return "three window lights in a row separated by two vertical mullions, typically a wider opening casement in the centre flanked by narrower fixed lights, all opening outward as casements where they open. Casements, NOT sliding sashes";
-  }
-  if (c.includes("four-light") || c.includes("2 over 2") || c.includes("2-over-2 cottage")) {
-    return "a cottage-style casement window of four lights arranged two over two in a grid of separate panes divided by mullions and a transom, opening outward as casements. Casement cottage window, NOT a vertical sliding sash";
-  }
-  if (c.includes("cottage")) {
-    return "a multi-light cottage casement window with several panes divided by glazing bars, opening outward on side hinges. Cottage CASEMENT, NOT a sliding sash";
-  }
+  // ---- (multi-light combinations handled above, before single-opener checks) ----
 
   // ---- BIFOLD DOORS ----
   if (type === "bifold") {
@@ -592,6 +644,10 @@ export function translateConfiguration(cfg, product) {
     else if (c.includes("single sidelight") || c.includes("with sidelight")) extras.push("a fixed glazed sidelight panel to one side of the door");
     if (c.includes("toplight")) extras.push("a fixed glazed toplight (transom panel) across the top above the door");
     if (extras.length) base += ", with " + extras.join(" and ");
+    // Steel-look heritage glazing bars on the glazed area
+    if (c.includes("steel-look glazing bars") || c.includes("steel-look")) {
+      base += ", the glazed area divided by very slim astragal glazing bars in a vintage steel-look Crittall style";
+    }
     return base;
   }
 

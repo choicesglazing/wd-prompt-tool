@@ -138,6 +138,8 @@ function shortProductLabel(brief) {
     hurstDoor: "uPVC residential doors",
     smartAlitherm400Window: "Alitherm 400 aluminium windows",
     smartAlitherm400Door: "Alitherm 400 aluminium doors",
+    smartHeritageWindow: "steel-look heritage aluminium windows",
+    smartHeritageDoor: "steel-look heritage aluminium doors",
     smartAluspace: "Aluspace aluminium internal screens",
     smartDesignerDoor: "aluminium Designer entrance doors",
     smartSignatureDoor: "aluminium Signature entrance doors",

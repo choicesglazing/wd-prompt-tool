@@ -10,6 +10,7 @@ import {
   SEASONS,
   PETS,
   PLATFORMS,
+  ASPECT_RATIOS,
   ASSET_TYPES,
   MODEL_SYNTAX,
   CAMERA_LANGUAGE,
@@ -690,8 +691,12 @@ function FormPanel(props) {
           </Field>
           <Field label="Aspect ratio">
             <select className="wd-select" value={aspectRatio} onChange={(e) => setAspectRatio(e.target.value)}>
-              {platformAspectRatios.map(a => <option key={a} value={a}>{a}</option>)}
+              {platformAspectRatios.map(a => {
+                const meta = ASPECT_RATIOS.find(r => r.id === a);
+                return <option key={a} value={a}>{meta ? meta.label : a}</option>;
+              })}
             </select>
+            <OptionNote text={ASPECT_RATIOS.find(r => r.id === aspectRatio)?.note} />
           </Field>
         </div>
 

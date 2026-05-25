@@ -1135,41 +1135,73 @@ export const CAMERA_LANGUAGE = {
 // =============================================================================
 // PLATFORM / ASPECT RATIOS
 // =============================================================================
+// Master list of every aspect ratio the tool offers, with a plain-English note
+// of what each is typically used for. The order here is the global fallback order.
+export const ASPECT_RATIOS = [
+  { id: "1:1", label: "1:1 — Square", note: "Square. Universal, safe on every platform and feed." },
+  { id: "4:5", label: "4:5 — Portrait (feed)", note: "Tall portrait. Best-performing size for Instagram/Facebook feed photos." },
+  { id: "9:16", label: "9:16 — Vertical (Story/Reel)", note: "Full-height vertical for Stories, Reels, TikTok and Shorts." },
+  { id: "2:3", label: "2:3 — Portrait (photo)", note: "Classic portrait photo ratio, strong on Pinterest." },
+  { id: "3:4", label: "3:4 — Portrait (standard)", note: "Standard portrait, slightly less tall than 4:5." },
+  { id: "16:9", label: "16:9 — Widescreen", note: "Widescreen landscape for websites, YouTube and presentations." },
+  { id: "3:2", label: "3:2 — Landscape (photo)", note: "Classic landscape photo ratio (35mm camera proportions)." },
+  { id: "4:3", label: "4:3 — Landscape (standard)", note: "Standard landscape, good for galleries and brochures." },
+  { id: "21:9", label: "21:9 — Ultra-wide / cinematic", note: "Very wide cinematic banner, hero strips and letterbox shots." }
+];
+
+// Helper: given a platform's preferred ratios, return them first, then every
+// other ratio after — so the recommended default auto-selects but the full set
+// is always available to pick from.
+function withAllRatios(preferred = []) {
+  const all = ASPECT_RATIOS.map(r => r.id);
+  const rest = all.filter(id => !preferred.includes(id));
+  return [...preferred, ...rest];
+}
+
 export const PLATFORMS = {
   facebook: {
     label: "Facebook",
     tone: "warm, approachable, family-business credible — matches the brand voice of Authoritative, Approachable, Professional, Trustworthy",
     aspectRatios: {
-      image: ["1:1", "4:5"],
-      video: ["1:1", "4:5", "9:16"],
-      carousel: ["1:1", "4:5"]
+      image: withAllRatios(["1:1", "4:5"]),
+      video: withAllRatios(["1:1", "4:5", "9:16"]),
+      carousel: withAllRatios(["1:1", "4:5"])
     }
   },
   instagram: {
     label: "Instagram",
     tone: "balanced, considered, lifestyle-credible — refined and confident",
     aspectRatios: {
-      image: ["1:1", "4:5"],
-      video: ["9:16", "4:5"],
-      carousel: ["1:1", "4:5"]
+      image: withAllRatios(["4:5", "1:1"]),
+      video: withAllRatios(["9:16", "4:5"]),
+      carousel: withAllRatios(["1:1", "4:5"])
     }
   },
   pinterest: {
     label: "Pinterest",
     tone: "editorial-magazine, slightly elevated styling, aspirational without being staged",
     aspectRatios: {
-      image: ["2:3", "4:5"],
-      video: ["2:3", "9:16"],
-      carousel: ["2:3"]
+      image: withAllRatios(["2:3", "4:5"]),
+      video: withAllRatios(["2:3", "9:16"]),
+      carousel: withAllRatios(["2:3"])
     }
   },
   x: {
     label: "X (Twitter)",
     tone: "documentary, straightforward, news-credibility",
     aspectRatios: {
-      image: ["16:9", "1:1"],
-      video: ["16:9", "1:1"],
-      carousel: ["16:9", "1:1"]
+      image: withAllRatios(["16:9", "1:1"]),
+      video: withAllRatios(["16:9", "1:1"]),
+      carousel: withAllRatios(["16:9", "1:1"])
+    }
+  },
+  website: {
+    label: "Website / general",
+    tone: "clean, professional, brochure-quality — suitable for the company website, brochures and general use",
+    aspectRatios: {
+      image: withAllRatios(["16:9", "3:2", "4:3", "1:1"]),
+      video: withAllRatios(["16:9", "1:1"]),
+      carousel: withAllRatios(["16:9", "4:5", "1:1"])
     }
   }
 };

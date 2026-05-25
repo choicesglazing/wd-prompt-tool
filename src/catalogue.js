@@ -598,8 +598,134 @@ export const HOUSING_STOCK = {
 };
 
 // =============================================================================
-// SCENE PRESETS
+// ELEVATION LAYOUT SUGGESTIONS
+// Curated, relevant "elevation make-up" options for full-house views.
+// Keyed by house archetype (derived from housing id) + product type + front/rear.
+// The prompt engine applies the chosen product to all listed openings, so these
+// describe the OTHER openings on the elevation, not the product spec itself.
 // =============================================================================
+
+// Map each housing stock id to a broad archetype so suggestions stay maintainable.
+export function houseArchetype(housingId = "") {
+  if (/newbuild|modern|estate|daventry|loughborough|cambourne/i.test(housingId)) return "newbuild";
+  if (/farmhouse/i.test(housingId)) return "farmhouse";
+  if (/village|ironstone|limestone|granite/i.test(housingId)) return "village_stone";
+  if (/townhouse|college/i.test(housingId)) return "townhouse";
+  if (/terrace/i.test(housingId)) return "terrace_period";
+  if (/semi/i.test(housingId)) return "semi";
+  if (/market_town/i.test(housingId)) return "market_town";
+  return "semi";
+}
+
+// Broad product family for suggestion relevance.
+export function productFamilyForSuggestions(product) {
+  if (!product) return "window";
+  if (product.type === "sash_window") return "sash";
+  if (product.type === "bifold" || product.type === "patio_door") return "glazed_rear";
+  if (product.type === "french_door") return "french";
+  if (["door"].includes(product.type)) return "door";
+  if (product.type === "roof_lantern" || product.type === "internal_screen") return "na";
+  return "window"; // casement / flush / aluminium windows
+}
+
+// The suggestion library. [archetype][front|rear] => array of layout strings.
+// These describe a coherent elevation; the engine forces them all to be the
+// chosen product. Kept generic enough to suit any colour/material.
+export const ELEVATION_SUGGESTIONS = {
+  semi: {
+    front: [
+      "a splayed bay window to the ground-floor front room, two windows side by side on the first floor above",
+      "a bay window beside the front door on the ground floor, two windows above on the first floor",
+      "a large ground-floor front window and two smaller windows on the first floor, arranged symmetrically",
+      "a bay window to the ground floor, a single window above, and a small window to the landing"
+    ],
+    rear: [
+      "a kitchen window and a larger living-room window on the ground floor, two bedroom windows above",
+      "a set of patio or French doors to the garden flanked by a window, two windows on the first floor above",
+      "a large ground-floor rear window beside the back door, two evenly spaced windows on the first floor"
+    ]
+  },
+  terrace_period: {
+    front: [
+      "a bay window to the ground-floor front room and a single window directly above on the first floor",
+      "a flat front with one window on the ground floor beside the front door and one window above",
+      "a ground-floor bay window, a first-floor window above, period proportions, aligned vertically"
+    ],
+    rear: [
+      "a window to the ground-floor kitchen and a window above to the rear bedroom, modest rear yard",
+      "a set of French doors to the rear yard with a window beside, one window on the first floor above"
+    ]
+  },
+  townhouse: {
+    front: [
+      "three storeys of vertically aligned windows, two per floor, even Georgian-style proportions",
+      "a front door with a window to one side on the ground floor, two windows on each upper floor aligned vertically"
+    ],
+    rear: [
+      "tall vertically aligned rear windows over three storeys, two per floor, with garden doors at ground level"
+    ]
+  },
+  newbuild: {
+    front: [
+      "a large ground-floor living-room window beside the front door, two bedroom windows on the first floor, integrated garage to the side",
+      "a tall ground-floor window and two first-floor windows in clean contemporary proportions, block-paved drive",
+      "a ground-floor picture window beside the entrance, two evenly spaced windows above, modern symmetrical layout"
+    ],
+    rear: [
+      "wide bifold or sliding doors opening to the garden on the ground floor, two windows on the first floor above",
+      "a large expanse of glazed doors to the rear with a window beside, two contemporary windows on the first floor",
+      "full-width glazing to the kitchen-diner extension, two bedroom windows on the first floor above"
+    ]
+  },
+  farmhouse: {
+    front: [
+      "a symmetrical farmhouse front, two windows either side of a central door on the ground floor, three windows on the first floor",
+      "evenly spaced windows in deep reveals, two flanking the central front door, matching windows above"
+    ],
+    rear: [
+      "generous rear windows and a set of garden doors, two windows on the first floor above, set in open landscape"
+    ]
+  },
+  village_stone: {
+    front: [
+      "windows set in deep stone reveals, two on the ground floor either side of the door, two aligned above, cottage proportions",
+      "a symmetrical stone cottage front, a window each side of the front door, matching windows on the first floor"
+    ],
+    rear: [
+      "stone-reveal rear windows with garden doors, two smaller windows on the first floor above"
+    ]
+  },
+  market_town: {
+    front: [
+      "Georgian-influenced symmetry, a window each side of the central front door, three aligned windows on the first floor",
+      "a bay window to the ground floor with aligned windows above, period market-town proportions"
+    ],
+    rear: [
+      "rear windows to kitchen and living room with garden doors between, two windows on the first floor above"
+    ]
+  }
+};
+
+// Returns an array of relevant elevation-layout suggestion strings for the
+// current product + house + front/rear selection. Empty if not applicable.
+export function getElevationSuggestions(product, housingId, exteriorAspect) {
+  if (!product) return [];
+  const family = productFamilyForSuggestions(product);
+  if (family === "na") return []; // roof lantern / internal screen: not applicable
+  const archetype = houseArchetype(housingId);
+  const side = (exteriorAspect === "rear_full") ? "rear" : "front";
+  const byArchetype = ELEVATION_SUGGESTIONS[archetype] || ELEVATION_SUGGESTIONS.semi;
+  let list = byArchetype[side] || [];
+
+  // For rear-glazing products (bifolds, patio doors) on a front view, fall back
+  // to rear-style options which feature the large glazed openings they suit.
+  if (family === "glazed_rear" && side === "front") {
+    list = byArchetype.rear || list;
+  }
+  return list;
+}
+
+
 export const SCENE_PRESETS = [
   {
     id: "hero",

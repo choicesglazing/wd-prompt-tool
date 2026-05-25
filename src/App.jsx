@@ -21,7 +21,8 @@ import {
   ROOMS,
   SHOT_ANGLES,
   COMPOSITIONS,
-  FRAMING_LENS
+  FRAMING_LENS,
+  getElevationSuggestions
 } from "./catalogue.js";
 import { buildPrompt, buildVariations, buildCarousel, buildVideoShotList } from "./promptEngine.js";
 
@@ -551,11 +552,28 @@ function FormPanel(props) {
             label="Elevation make-up (optional)"
             hint="Describe the other openings on the elevation so they're rendered as YOUR product too. The chosen product, colour and style are applied to all of them. Leave blank to just enforce 'all windows match'."
           >
+            {(() => {
+              const suggestions = getElevationSuggestions(product, housingId, exteriorAspect);
+              if (suggestions.length === 0) return null;
+              return (
+                <select
+                  className="wd-select"
+                  value=""
+                  onChange={(e) => { if (e.target.value) setElevationLayout(e.target.value); }}
+                  style={{ marginBottom: 8 }}
+                >
+                  <option value="">— Suggested layouts for this house & product —</option>
+                  {suggestions.map((s, i) => (
+                    <option key={i} value={s}>{s.length > 70 ? s.slice(0, 70) + "…" : s}</option>
+                  ))}
+                </select>
+              );
+            })()}
             <input
               className="wd-input"
               value={elevationLayout}
               onChange={(e) => setElevationLayout(e.target.value)}
-              placeholder="e.g. a bay window to the ground floor, two casements above, a front door to the right"
+              placeholder="Pick a suggestion above, or type your own (e.g. a bay window to the ground floor, two casements above, a front door to the right)"
             />
           </Field>
         )}
